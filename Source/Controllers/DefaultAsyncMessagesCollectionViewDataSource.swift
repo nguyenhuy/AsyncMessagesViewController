@@ -138,12 +138,7 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             // Copy metadata of new messages to the outdated metadata array. Thus outdated and updated arrays will have the same size and computing diff between them will be much easier.
             for insertedIndex in insertedIndices {
-                let newNodeMetadata = updatedNodeMetadatas[insertedIndex]
-                if insertedIndex < outdatedNodeMetadatas.count {
-                    outdatedNodeMetadatas.insert(newNodeMetadata, atIndex: insertedIndex)
-                } else {
-                    outdatedNodeMetadatas.append(newNodeMetadata)
-                }
+                outdatedNodeMetadatas.insert(updatedNodeMetadatas[insertedIndex], atIndex: insertedIndex)
             }
             let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
             
@@ -238,11 +233,9 @@ private extension Array {
 private extension NSIndexPath {
     
     class func createIndexPaths(section: Int, items: [Int]) -> [NSIndexPath] {
-        var indexPaths = [NSIndexPath]()
-        for item in items {
-            indexPaths.append(NSIndexPath(forItem: item, inSection: section))
+        return items.map() {
+            NSIndexPath(forItem: $0, inSection: section)
         }
-        return indexPaths
     }
     
 }
