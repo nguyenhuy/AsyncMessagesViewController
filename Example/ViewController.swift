@@ -16,13 +16,11 @@ class ViewController: AsyncMessagesViewController {
     }
     
     init() {
-        var tempUsers = [User]()
-        for i in 0..<5 {
-            let avatarURL = LoremIpsum.URLForPlaceholderImageFromService(.LoremPixel, withSize: CGSizeMake(kAMMessageCellNodeAvatarImageSize, kAMMessageCellNodeAvatarImageSize))
-            let user = User(ID: "user-\(i)", name: LoremIpsum.name(), avatarURL: avatarURL)
-            tempUsers.append(user)
+        let avatarImageSize = CGSizeMake(kAMMessageCellNodeAvatarImageSize, kAMMessageCellNodeAvatarImageSize)
+        users = (0..<5).map() {
+            let avatarURL = LoremIpsum.URLForPlaceholderImageFromService(.LoremPixel, withSize: avatarImageSize)
+            return User(ID: "user-\($0)", name: LoremIpsum.name(), avatarURL: avatarURL)
         }
-        users = tempUsers
         
         super.init(dataSource: DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID))
     }
