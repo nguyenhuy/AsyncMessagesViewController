@@ -20,7 +20,7 @@ A smooth, responsive and flexible messages UI library for iOS. Built on top of t
 pod 'AsyncMessagesViewController'  
 ````
 
-Can't do it? Well I'm sorry but the pod won't be available until AsyncDisplayKit hits v1.2 and [this commit](https://github.com/slackhq/SlackTextViewController/commit/0012e6bb70cd49c5c31b3532ec5ca2bc68ed1c35) goes to a release.
+Can't do it? Well I'm sorry but the pod won't be available until AsyncDisplayKit hits v1.2.
 
 ### Without CocoaPods
 Copy the `Source\` directory to your project and install all dependencies.
