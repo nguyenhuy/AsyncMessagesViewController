@@ -12,7 +12,7 @@ let kAMMessageCellNodeTopTextAttributes = [NSForegroundColorAttributeName: UICol
     NSFontAttributeName: UIFont.boldSystemFontOfSize(12)]
 let kAMMessageCellNodeContentTopTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(12)]
-let kAMMessageCellNodeBottomTextNode = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+let kAMMessageCellNodeBottomTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(11)]
 
 private let kContentHorizontalInset: CGFloat = 4
