@@ -11,8 +11,9 @@ import Foundation
 class AsyncMessagesViewController: SLKTextViewController {
 
     let dataSource: AsyncMessagesCollectionViewDataSource
-    /// Messages collection view. Called 'asyncCollectionView' because SLKTextViewController reserves 'collectionView' name.
-    let asyncCollectionView: ASCollectionView
+    override var collectionView: ASCollectionView {
+        return scrollView as ASCollectionView
+    }
 
     init(dataSource: AsyncMessagesCollectionViewDataSource = DefaultAsyncMessagesCollectionViewDataSource()) {
         self.dataSource = dataSource
@@ -20,13 +21,12 @@ class AsyncMessagesViewController: SLKTextViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.Vertical
         //TODO: consider enabling asyncDataFetching
-        asyncCollectionView = ASCollectionView(frame: CGRectZero, collectionViewLayout: layout, asyncDataFetching: false)
-        
-        super.init(scrollView: asyncCollectionView)
-
+        let asyncCollectionView = ASCollectionView(frame: CGRectZero, collectionViewLayout: layout, asyncDataFetching: false)
         asyncCollectionView.backgroundColor = UIColor.whiteColor()
         asyncCollectionView.scrollsToTop = true
         asyncCollectionView.asyncDataSource = dataSource
+        
+        super.init(scrollView: asyncCollectionView)
         
         inverted = false
     }
@@ -37,16 +37,16 @@ class AsyncMessagesViewController: SLKTextViewController {
 
     override func viewWillLayoutSubviews() {
         let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 5, 0)
-        asyncCollectionView.contentInset = insets
-        asyncCollectionView.scrollIndicatorInsets = insets
+        collectionView.contentInset = insets
+        collectionView.scrollIndicatorInsets = insets
 
         super.viewWillLayoutSubviews()
     }
     
     func scrollCollectionViewToBottom() {
-        let lastItemIndex = dataSource.collectionView(asyncCollectionView, numberOfItemsInSection: 0) - 1
+        let lastItemIndex = dataSource.collectionView(collectionView, numberOfItemsInSection: 0) - 1
         let lastItemIndexPath = NSIndexPath(forItem: lastItemIndex, inSection: 0)
-        asyncCollectionView.scrollToItemAtIndexPath(lastItemIndexPath, atScrollPosition: .Bottom, animated: true)
+        collectionView.scrollToItemAtIndexPath(lastItemIndexPath, atScrollPosition: .Bottom, animated: true)
     }
     
 }

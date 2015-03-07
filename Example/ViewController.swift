@@ -46,7 +46,7 @@ class ViewController: AsyncMessagesViewController {
                 content: textView.text,
                 date: NSDate(),
                 sender: user)
-            dataSource.collectionView(asyncCollectionView, insertMessages: [message]) {completed in
+            dataSource.collectionView(collectionView, insertMessages: [message]) {completed in
                 self.scrollCollectionViewToBottom()
             }
         }
@@ -75,13 +75,13 @@ class ViewController: AsyncMessagesViewController {
                 sender: sender)
             messages.append(message)
         }
-        dataSource.collectionView(asyncCollectionView, insertMessages: messages, completion: nil)
+        dataSource.collectionView(collectionView, insertMessages: messages, completion: nil)
     }
     
     func changeCurrentUser() {
         let otherUsers = users.filter({$0.ID != self.dataSource.currentUserID()})
         let newUser = otherUsers[random() % otherUsers.count]
-        dataSource.collectionView(asyncCollectionView, updateCurrentUserID: newUser.ID)
+        dataSource.collectionView(collectionView, updateCurrentUserID: newUser.ID)
     }
 
 }
