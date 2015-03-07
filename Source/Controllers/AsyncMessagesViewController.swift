@@ -15,7 +15,7 @@ class AsyncMessagesViewController: SLKTextViewController {
         return scrollView as ASCollectionView
     }
 
-    init(dataSource: AsyncMessagesCollectionViewDataSource = DefaultAsyncMessagesCollectionViewDataSource()) {
+    init(dataSource: AsyncMessagesCollectionViewDataSource) {
         self.dataSource = dataSource
 
         let layout = UICollectionViewFlowLayout()

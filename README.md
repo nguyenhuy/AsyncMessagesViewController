@@ -47,23 +47,25 @@ Copy the `Source\` directory to your project and install all dependencies.
 ##Customizations
   * Custom bubble node
     * Please read [this guide](http://asyncdisplaykit.org/guide/2) on writting a custom `ASDisplayNode`.
-    * Inject your own bubble node by overriding `DefaultAsyncMessagesCollectionViewDataSource.bubbleNodeForMessage(MessageData, MessageCellNodeMetadata)`.
+    * Implement a factory that conforms to `MessageBubbleNodeFactory` protocol.
+    * Inject your factory to `DefaultAsyncMessagesCollectionViewDataSource` via its initializer.
+    * Inject the data source to `AsyncMessagesViewController` (also via its initializer).
   * Custom bubble image's colors
     * Initiate a `MessageBubbleImageProvider` with whatever colors you want.
-    * Inject the provide to `DefaultAsyncMessagesCollectionViewDataSource` via its initializer.
-    * Inject the data source to `AsyncMessagesViewController` (also via its initializer).
+    * Inject it to your data source.
+    * Inject the data source to your view controller.
   * Custom bubble images
     * Implementing your own `MessageBubbleImageProvider`.
-    * Inject it to the data source.
-    * Inject the data source to the view controller.
+    * Inject it to your data source.
+    * Inject the data source to your view controller.
   * Custom logic for computing cell metadata
     * Subclass `MessageCellNodeMetadataFactory` and override any neccessary method.
-    * Inject it to the data source.
-    * Inject the data source to the view controller.
+    * Inject it to your data source.
+    * Inject the data source to your view controller.
   * Custom format for message date
     * Subclass `MessageTimestampFormatter` and override `attributedTimestamp(NSDate)`.
-    * Inject it to the data source.
-    * Inject the data source to the view controller.
+    * Inject it to your data source.
+    * Inject the data source to your view controller.  
   * Any customization related to the input toolbar:
     * Please take a look at [SlackTextViewController](https://github.com/slackhq/SlackTextViewController) itself.
   * Other customizations:

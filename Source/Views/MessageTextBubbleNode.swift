@@ -8,14 +8,25 @@
 
 import Foundation
 
-let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
+private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(14)]
-let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(),
+private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(14)]
-
 private let kTextNodeXOffset: CGFloat = 6
 private let kTextNodeInset: CGFloat = 12
 private let kTextNodeMinWidth: CGFloat = 15
+
+class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
+    
+    func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode {
+        let attributes = isOutgoing
+            ? kAMMessageTextBubbleNodeOutgoingTextAttributes
+            : kAMMessageTextBubbleNodeIncomingTextAttributes
+        let text = NSAttributedString(string: message.content(), attributes: attributes)
+        return MessageTextBubbleNode(text: text, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
+    }
+    
+}
 
 private class MessageTextNode: ASTextNode {
     
@@ -38,14 +49,16 @@ class MessageTextBubbleNode: ASDisplayNode {
     private let bubbleImageNode: ASImageNode
     private let textNode: ASTextNode
     
-    init(isOutgoing: Bool, bubbleImage: UIImage, text: NSAttributedString) {
+    init(text: NSAttributedString, isOutgoing: Bool, bubbleImage: UIImage) {
         self.isOutgoing = isOutgoing
+
         bubbleImageNode = ASImageNode()
-        textNode = MessageTextNode()
-        super.init()
-        
         bubbleImageNode.image = bubbleImage
+
+        textNode = MessageTextNode()
         textNode.attributedString = text
+        
+        super.init()
         
         addSubnode(bubbleImageNode)
         addSubnode(textNode)

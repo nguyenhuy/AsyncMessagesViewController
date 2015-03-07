@@ -9,8 +9,8 @@
 import Foundation
 
 typealias MessageDataContentType = Int
-let kAMMessageDataContentTypeText = 0
-let kAMMessageDataContentTypeNetworkImage = 1
+let kAMMessageDataContentTypeText: MessageDataContentType = 0
+let kAMMessageDataContentTypeNetworkImage: MessageDataContentType = 1
 
 @objc protocol MessageData {
     

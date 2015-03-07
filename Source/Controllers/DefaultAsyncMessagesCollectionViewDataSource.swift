@@ -14,18 +14,27 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
     private let nodeMetadataFactory: MessageCellNodeMetadataFactory
     private let bubbleImageProvider: MessageBubbleImageProvider
     private let timestampFormatter: MessageTimestampFormatter
+    private let bubbleNodeFactories: [MessageDataContentType: MessageBubbleNodeFactory]
     private var _currentUserID: String?
     /// Managed messages. They are sorted in ascending order of their date. The order is enforced during insertion.
     private var messages: [MessageData]
     private var nodeMetadatas: [MessageCellNodeMetadata]
     
-    init(currentUserID: String? = nil, nodeMetadataFactory: MessageCellNodeMetadataFactory = MessageCellNodeMetadataFactory(), bubbleImageProvider: MessageBubbleImageProvider = MessageBubbleImageProvider(), timestampFormatter: MessageTimestampFormatter = MessageTimestampFormatter()) {
-        _currentUserID = currentUserID
-        self.nodeMetadataFactory = nodeMetadataFactory
-        self.bubbleImageProvider = bubbleImageProvider
-        self.timestampFormatter = timestampFormatter
-        messages = []
-        nodeMetadatas = []
+    init(currentUserID: String? = nil,
+        nodeMetadataFactory: MessageCellNodeMetadataFactory = MessageCellNodeMetadataFactory(),
+        bubbleImageProvider: MessageBubbleImageProvider = MessageBubbleImageProvider(),
+        timestampFormatter: MessageTimestampFormatter = MessageTimestampFormatter(),
+        bubbleNodeFactories: [MessageDataContentType: MessageBubbleNodeFactory] = [
+            kAMMessageDataContentTypeText: MessageTextBubbleNodeFactory(),
+            kAMMessageDataContentTypeNetworkImage: MessageNetworkImageBubbleNodeFactory()
+        ]) {
+            _currentUserID = currentUserID
+            self.nodeMetadataFactory = nodeMetadataFactory
+            self.bubbleImageProvider = bubbleImageProvider
+            self.timestampFormatter = timestampFormatter
+            self.bubbleNodeFactories = bubbleNodeFactories
+            messages = []
+            nodeMetadatas = []
     }
 
     //MARK: ASCollectionViewDataSource methods
@@ -47,6 +56,10 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
             ? NSAttributedString(string: message.senderDisplayName(), attributes: kAMMessageCellNodeContentTopTextAttributes)
             : nil
         
+        let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing, hasTail: metadata.showsTailForBubbleImage)
+        assert(bubbleNodeFactories.indexForKey(message.contentType()) != nil, "No bubble node factory for content type: \(message.contentType())")
+        let bubbleNode = bubbleNodeFactories[message.contentType()]!.build(message, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
+        
         let cellNode = MessageCellNode(
             isOutgoing: isOutgoing,
             topText: messageDate,
@@ -54,33 +67,11 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
             bottomText: nil,
             senderAvatarURL: senderAvatarURL,
             senderAvatarImageSize: kAMMessageCellNodeAvatarImageSize,
-            bubbleNode: bubbleNodeForMessage(message, metadata: metadata))
+            bubbleNode: bubbleNode)
         
         return cellNode
     }
 
-    func bubbleNodeForMessage(message: MessageData, metadata: MessageCellNodeMetadata) -> ASDisplayNode {
-        let isOutgoing = metadata.isOutgoing
-        let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing, hasTail: metadata.showsTailForBubbleImage)
-        var node: ASDisplayNode
-        
-        switch message.contentType() {
-        case kAMMessageDataContentTypeText:
-            let attributes = isOutgoing
-                ? kAMMessageTextBubbleNodeOutgoingTextAttributes
-                : kAMMessageTextBubbleNodeIncomingTextAttributes
-            let text = NSAttributedString(string: message.content(), attributes: attributes)
-            node = MessageTextBubbleNode(isOutgoing: isOutgoing, bubbleImage: bubbleImage, text: text)
-        case kAMMessageDataContentTypeNetworkImage:
-            let URL = NSURL(string: message.content())
-            node = MessageNetworkImageBubbleNode(bubbleImage: bubbleImage, URL: URL)
-        default:
-            fatalError("Unsupported message content type.")
-        }
-        
-        return node
-    }
-    
     func collectionViewLockDataSource(collectionView: ASCollectionView!) {
         //TODO: figure out what should be done here
     }

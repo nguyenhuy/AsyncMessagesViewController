@@ -22,7 +22,8 @@ class ViewController: AsyncMessagesViewController {
             return User(ID: "user-\($0)", name: LoremIpsum.name(), avatarURL: avatarURL)
         }
         
-        super.init(dataSource: DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID))
+        let dataSource = DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID)
+        super.init(dataSource: dataSource)
     }
 
     required init(coder aDecoder: NSCoder) {

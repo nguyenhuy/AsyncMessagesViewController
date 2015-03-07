@@ -26,6 +26,7 @@
 		ACC6EF681AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */; };
 		ACC6EF691AA1A870002B76A9 /* MessageTextBubbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */; };
 		ACC6EF6A1AA1A870002B76A9 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5C1AA1A870002B76A9 /* UIImageExtensions.swift */; };
+		ACCC86871AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCC86861AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift */; };
 		E3FABBFD495008D609A54397 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8A292D9BC7865A434B294B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageNetworkImageBubbleNode.swift; sourceTree = "<group>"; };
 		ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTextBubbleNode.swift; sourceTree = "<group>"; };
 		ACC6EF5C1AA1A870002B76A9 /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
+		ACCC86861AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleNodeFactory.swift; sourceTree = "<group>"; };
 		BE8CB3D008F5A8DD8B90B1F1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,6 +191,7 @@
 			children = (
 				ACC6EF581AA1A870002B76A9 /* MessageCellNode.swift */,
 				ACC6EF591AA1A870002B76A9 /* MessageContentNode.swift */,
+				ACCC86861AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift */,
 				ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */,
 				ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */,
 				ACC6EF5C1AA1A870002B76A9 /* UIImageExtensions.swift */,
@@ -315,6 +318,7 @@
 				ACC6EF681AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift in Sources */,
 				AC8B65D31A9373DA00131D84 /* AppDelegate.swift in Sources */,
 				AC90D5FE1AA1A68F0042C0D4 /* Message.swift in Sources */,
+				ACCC86871AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift in Sources */,
 				ACC6EF621AA1A870002B76A9 /* MessageCellNodeMetadataFactory.swift in Sources */,
 				ACC6EF6A1AA1A870002B76A9 /* UIImageExtensions.swift in Sources */,
 			);
