@@ -12,7 +12,7 @@ class AsyncMessagesViewController: SLKTextViewController {
 
     let dataSource: AsyncMessagesCollectionViewDataSource
     override var collectionView: ASCollectionView {
-        return scrollView as ASCollectionView
+        return scrollView as! ASCollectionView
     }
 
     init(dataSource: AsyncMessagesCollectionViewDataSource) {

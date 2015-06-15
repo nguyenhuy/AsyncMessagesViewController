@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Message: MessageData {
+@objc class Message: MessageData {
 
     private let _contentType: MessageDataContentType
     private let _content: String

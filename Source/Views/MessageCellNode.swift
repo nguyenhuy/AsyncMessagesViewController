@@ -32,35 +32,29 @@ class MessageCellNode: ASCellNode {
     
     init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: NSURL?, senderAvatarImageSize: CGFloat, bubbleNode: ASDisplayNode) {
         self.isOutgoing = isOutgoing
-        contentNode = MessageContentNode(isOutgoing: isOutgoing, avatarURL: senderAvatarURL, avatarImageSize: senderAvatarImageSize, bubbleNode: bubbleNode)
+
+        topTextNode = topText != nil ? ASTextNode() : nil
+        topTextNode?.layerBacked = true
+        topTextNode?.attributedString = topText
+
+        contentTopTextNode = contentTopText != nil ? ASTextNode() : nil
+        contentTopTextNode?.layerBacked = true
+        contentTopTextNode?.attributedString = contentTopText
+
+        contentNode = MessageContentNode(isOutgoing: isOutgoing, avatarURL: senderAvatarURL,
+            avatarImageSize: senderAvatarImageSize, bubbleNode: bubbleNode)
+
+        bottomTextNode = bottomText != nil ? ASTextNode() : nil
+        bottomTextNode?.layerBacked = true
+        bottomTextNode?.attributedString = bottomText
+
         super.init()
-
-        if let text = topText {
-            let node = ASTextNode()
-            node.layerBacked = true
-            node.attributedString = text
-            self.addSubnode(node)
-            topTextNode = node
-        }
-
-        if let text = contentTopText {
-            let node = ASTextNode()
-            node.layerBacked = true
-            node.attributedString = text
-            self.addSubnode(node)
-            contentTopTextNode = node
-        }
-
-        addSubnode(contentNode)
         
-        if let text = bottomText {
-            let node = ASTextNode()
-            node.layerBacked = true
-            node.attributedString = text
-            self.addSubnode(node)
-            bottomTextNode = node
-        }
-
+        if let node = topTextNode { addSubnode(node) }
+        if let node = contentTopTextNode { addSubnode(node) }
+        addSubnode(contentNode)
+        if let node = bottomTextNode { addSubnode(node) }
+        
         selectionStyle = .None
     }
     

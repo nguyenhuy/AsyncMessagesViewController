@@ -66,7 +66,7 @@ class ViewController: AsyncMessagesViewController {
             let sender = users[random() % users.count]
             
             let previousMessage: Message? = i > 0 ? messages[i - 1] : nil
-            let hasSameSender = sender.ID == previousMessage?.senderID() ?? false
+            let hasSameSender = (sender.ID == previousMessage?.senderID()) ?? false
             let date = hasSameSender ? previousMessage!.date().dateByAddingTimeInterval(5) : LoremIpsum.date()
             
             let message = Message(
