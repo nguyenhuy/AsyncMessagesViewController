@@ -8,6 +8,8 @@
 
 import Foundation
 
+let kAMMessageCellNodeAvatarImageSize: CGFloat = 34
+
 let kAMMessageCellNodeTopTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
     NSFontAttributeName: UIFont.boldSystemFontOfSize(12)]
 let kAMMessageCellNodeContentTopTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
@@ -15,35 +17,38 @@ let kAMMessageCellNodeContentTopTextAttributes = [NSForegroundColorAttributeName
 let kAMMessageCellNodeBottomTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGrayColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(11)]
 
-private let kContentHorizontalInset: CGFloat = 4
-private let kContentVerticalInset: CGFloat = 1
-
 class MessageCellNode: ASCellNode {
     
     private let isOutgoing: Bool
     private let topTextNode: ASTextNode?
     private let contentTopTextNode: ASTextNode?
     private let bottomTextNode: ASTextNode?
-    private let contentNode: MessageContentNode
+    private let bubbleNode: ASDisplayNode
+    private let avatarImageSize: CGFloat
+    private let avatarImageNode: ASNetworkImageNode?
 
-    private var contentTopTextNodeXOffset: CGFloat {
-        return contentNode.avatarImageSize > 0 ? 56 : 11
-    }
-    
     init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: NSURL?, senderAvatarImageSize: CGFloat, bubbleNode: ASDisplayNode) {
         self.isOutgoing = isOutgoing
 
         topTextNode = topText != nil ? ASTextNode() : nil
         topTextNode?.layerBacked = true
         topTextNode?.attributedString = topText
+        topTextNode?.alignSelf = .Center
 
         contentTopTextNode = contentTopText != nil ? ASTextNode() : nil
         contentTopTextNode?.layerBacked = true
         contentTopTextNode?.attributedString = contentTopText
-
-        contentNode = MessageContentNode(isOutgoing: isOutgoing, avatarURL: senderAvatarURL,
-            avatarImageSize: senderAvatarImageSize, bubbleNode: bubbleNode)
-
+        
+        avatarImageSize = senderAvatarImageSize
+        avatarImageNode = avatarImageSize > 0 ? ASNetworkImageNode() : nil
+        avatarImageNode?.preferredFrameSize = CGSizeMake(avatarImageSize, avatarImageSize)
+        avatarImageNode?.backgroundColor = UIColor.clearColor()
+        avatarImageNode?.imageModificationBlock = ASImageNodeRoundBorderModificationBlock(0, nil)
+        avatarImageNode?.URL = senderAvatarURL
+        
+        self.bubbleNode = bubbleNode
+        self.bubbleNode.flexShrink = true
+        
         bottomTextNode = bottomText != nil ? ASTextNode() : nil
         bottomTextNode?.layerBacked = true
         bottomTextNode?.attributedString = bottomText
@@ -52,38 +57,42 @@ class MessageCellNode: ASCellNode {
         
         if let node = topTextNode { addSubnode(node) }
         if let node = contentTopTextNode { addSubnode(node) }
-        addSubnode(contentNode)
+        if let node = avatarImageNode { addSubnode(node) }
+        addSubnode(bubbleNode)
         if let node = bottomTextNode { addSubnode(node) }
         
         selectionStyle = .None
     }
     
-    override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
-        let pairs: [(ASDisplayNode?, CGFloat)] = [(topTextNode, 0), (contentTopTextNode, contentTopTextNodeXOffset), (contentNode, 0), (bottomTextNode, 0)]
-        var requiredHeight: CGFloat = 0
-        for (optionalNode, xOffset) in pairs {
-            if let node = optionalNode {
-                let measuredSize = node.measure(CGSizeMake(constrainedSize.width - xOffset - 2 * kContentHorizontalInset, constrainedSize.height))
-                requiredHeight += measuredSize.height
-            }
-        }
-        return CGSizeMake(constrainedSize.width, requiredHeight + 2 * kContentVerticalInset)
+    override func layoutSpecThatFits(constrainedSize: ASSizeRange) -> ASLayoutSpec! {
+        return ASInsetLayoutSpec(
+            insets: UIEdgeInsetsMake(1, 4, 1, 4),
+            child: ASStackLayoutSpec(
+                direction: .Vertical,
+                spacing: 0,
+                justifyContent: .Start, // Never used
+                alignItems: isOutgoing ? .End : .Start,
+                children: Array.filterNils([
+                    topTextNode,
+                    contentTopTextNode == nil
+                        ? nil
+                        : ASInsetLayoutSpec(insets: UIEdgeInsetsMake(0, 22 + avatarImageSize, 0, 0), child: contentTopTextNode),
+                    ASStackLayoutSpec(
+                        direction: .Horizontal,
+                        spacing: 2,
+                        justifyContent: .Start, // Never used
+                        alignItems: .End,
+                        children: Array.filterNils(isOutgoing ? [bubbleNode, avatarImageNode] : [avatarImageNode, bubbleNode])),
+                    bottomTextNode])))
     }
     
-    override func layout() {
-        let topTextNodeXOffset = (self.calculatedSize.width - (topTextNode?.calculatedSize.width ?? 0)) / 2 - kContentHorizontalInset // topTextNode is center-aligned
-        let pairs: [(ASDisplayNode?, CGFloat)] = [(topTextNode, topTextNodeXOffset), (contentTopTextNode, contentTopTextNodeXOffset), (contentNode, 0), (bottomTextNode, 0)]
-        var y: CGFloat = kContentVerticalInset
-        for (optionalNode, xOffset) in pairs {
-            if let node = optionalNode {
-                var x = kContentHorizontalInset + xOffset
-                if isOutgoing {
-                    x = self.calculatedSize.width - node.calculatedSize.width - x // Right-aligned
-                }
-                node.frame = CGRectMake(x, y, node.calculatedSize.width, node.calculatedSize.height)
-                y = node.frame.maxY
-            }
-        }
+}
+
+private extension Array {
+    
+    // Credits: http://stackoverflow.com/a/28190873/1136669
+    static func filterNils(array: [T?]) -> [T] {
+        return array.filter { $0 != nil }.map { $0! }
     }
     
 }

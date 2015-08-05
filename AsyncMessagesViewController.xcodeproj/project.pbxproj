@@ -22,7 +22,6 @@
 		ACC6EF631AA1A870002B76A9 /* MessageTimestampFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF531AA1A870002B76A9 /* MessageTimestampFormatter.swift */; };
 		ACC6EF641AA1A870002B76A9 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF551AA1A870002B76A9 /* MessageData.swift */; };
 		ACC6EF661AA1A870002B76A9 /* MessageCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF581AA1A870002B76A9 /* MessageCellNode.swift */; };
-		ACC6EF671AA1A870002B76A9 /* MessageContentNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF591AA1A870002B76A9 /* MessageContentNode.swift */; };
 		ACC6EF681AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */; };
 		ACC6EF691AA1A870002B76A9 /* MessageTextBubbleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */; };
 		ACC6EF6A1AA1A870002B76A9 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC6EF5C1AA1A870002B76A9 /* UIImageExtensions.swift */; };
@@ -51,7 +50,6 @@
 		ACC6EF531AA1A870002B76A9 /* MessageTimestampFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTimestampFormatter.swift; sourceTree = "<group>"; };
 		ACC6EF551AA1A870002B76A9 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 		ACC6EF581AA1A870002B76A9 /* MessageCellNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCellNode.swift; sourceTree = "<group>"; };
-		ACC6EF591AA1A870002B76A9 /* MessageContentNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContentNode.swift; sourceTree = "<group>"; };
 		ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageNetworkImageBubbleNode.swift; sourceTree = "<group>"; };
 		ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTextBubbleNode.swift; sourceTree = "<group>"; };
 		ACC6EF5C1AA1A870002B76A9 /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 			isa = PBXGroup;
 			children = (
 				ACC6EF581AA1A870002B76A9 /* MessageCellNode.swift */,
-				ACC6EF591AA1A870002B76A9 /* MessageContentNode.swift */,
 				ACCC86861AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift */,
 				ACC6EF5A1AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift */,
 				ACC6EF5B1AA1A870002B76A9 /* MessageTextBubbleNode.swift */,
@@ -310,7 +307,6 @@
 				ACC6EF691AA1A870002B76A9 /* MessageTextBubbleNode.swift in Sources */,
 				AC90D5FF1AA1A68F0042C0D4 /* User.swift in Sources */,
 				ACC6EF601AA1A870002B76A9 /* DefaultAsyncMessagesCollectionViewDataSource.swift in Sources */,
-				ACC6EF671AA1A870002B76A9 /* MessageContentNode.swift in Sources */,
 				ACC6EF631AA1A870002B76A9 /* MessageTimestampFormatter.swift in Sources */,
 				ACC6EF5E1AA1A870002B76A9 /* AsyncMessagesCollectionViewDataSource.swift in Sources */,
 				ACC6EF611AA1A870002B76A9 /* MessageBubbleImageProvider.swift in Sources */,

@@ -12,9 +12,6 @@ private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorA
     NSFontAttributeName: UIFont.systemFontOfSize(14)]
 private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(),
     NSFontAttributeName: UIFont.systemFontOfSize(14)]
-private let kTextNodeXOffset: CGFloat = 6
-private let kTextNodeInset: CGFloat = 12
-private let kTextNodeMinWidth: CGFloat = 15
 
 class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
     
@@ -38,7 +35,7 @@ private class MessageTextNode: ASTextNode {
     
     override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
         let size = super.calculateSizeThatFits(constrainedSize)
-        return CGSize(width: max(size.width, kTextNodeMinWidth), height: size.height)
+        return CGSize(width: max(size.width, 15), height: size.height)
     }
     
 }
@@ -64,22 +61,17 @@ class MessageTextBubbleNode: ASDisplayNode {
         addSubnode(textNode)
     }
     
-    override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
-        let textNodeHorizontalGap = kTextNodeXOffset + 2 * kTextNodeInset
-        let textNodeMeasuredSize = textNode.measure(CGSizeMake(constrainedSize.width - textNodeHorizontalGap, constrainedSize.height))
-        return CGSizeMake(
-            textNodeMeasuredSize.width + textNodeHorizontalGap, // Wrap textNode's width
-            textNodeMeasuredSize.height + 2 * kTextNodeInset)
-    }
-    
-    override func layout() {
-        bubbleImageNode.frame = CGRectMake(0, 0, calculatedSize.width, calculatedSize.height)
-        
-        var textNodeX = kTextNodeXOffset + kTextNodeInset
-        if isOutgoing {
-            textNodeX = self.calculatedSize.width - textNode.calculatedSize.width - textNodeX //Right-aligned
-        }
-        textNode.frame = CGRectMake(textNodeX, kTextNodeInset, textNode.calculatedSize.width, textNode.calculatedSize.height)
+    override func layoutSpecThatFits(constrainedSize: ASSizeRange) -> ASLayoutSpec! {
+        let textNodeVerticalOffset = CGFloat(6)
+        return ASBackgroundLayoutSpec(
+            child: ASInsetLayoutSpec(
+                insets: UIEdgeInsetsMake(
+                    12,
+                    12 + (isOutgoing ? 0 : textNodeVerticalOffset),
+                    12,
+                    12 + (isOutgoing ? textNodeVerticalOffset : 0)),
+                child: textNode),
+            background: bubbleImageNode)
     }
     
 }

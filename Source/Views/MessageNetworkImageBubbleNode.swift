@@ -8,8 +8,6 @@
 
 import Foundation
 
-private let kAMImageBubbleNodeSize: CGSize = CGSizeMake(210, 150)
-
 class MessageNetworkImageBubbleNodeFactory: MessageBubbleNodeFactory {
     
     func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode {
@@ -23,7 +21,7 @@ class MessageNetworkImageBubbleNode: ASNetworkImageNode {
     private let minSize: CGSize
     private let bubbleImage: UIImage
     
-    init(URL: NSURL?, bubbleImage: UIImage, minSize: CGSize = kAMImageBubbleNodeSize) {
+    init(URL: NSURL?, bubbleImage: UIImage, minSize: CGSize = CGSizeMake(210, 150)) {
         self.minSize = minSize
         self.bubbleImage = bubbleImage
         super.init(cache: nil, downloader: ASBasicImageDownloader())

@@ -71,13 +71,11 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         
         return cellNode
     }
-
-    func collectionViewLockDataSource(collectionView: ASCollectionView!) {
-        //TODO: figure out what should be done here
-    }
-    
-    func collectionViewUnlockDataSource(collectionView: ASCollectionView!) {
-        //TODO: figure out what should be done here
+  
+    func collectionView(collectionView: ASCollectionView!, constrainedSizeForNodeAtIndexPath indexPath: NSIndexPath!) -> ASSizeRange {
+        let width = collectionView.bounds.width;
+        // Assume horizontal scroll directions
+        return ASSizeRangeMake(CGSizeMake(width, 0), CGSizeMake(width, CGFloat.max))
     }
 
     //MARK: AsyncMessagesCollectionViewDataSource methods
