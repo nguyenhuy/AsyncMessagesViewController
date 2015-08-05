@@ -96,11 +96,8 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let updatedMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedMetadatas
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedMetadatas, rhs: updatedMetadatas)
-            
-            collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
-        })
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedMetadatas, rhs: updatedMetadatas)
+        collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
     }
 
     func collectionView(collectionView: ASCollectionView, messageForItemAtIndexPath indexPath: NSIndexPath) -> MessageData {
@@ -126,25 +123,23 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedNodeMetadatas
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            // Copy metadata of new messages to the outdated metadata array. Thus outdated and updated arrays will have the same size and computing diff between them will be much easier.
-            for insertedIndex in insertedIndices {
-                outdatedNodeMetadatas.insert(updatedNodeMetadatas[insertedIndex], atIndex: insertedIndex)
-            }
-            let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
-            
-            collectionView.performBatchUpdates(
-                {
-                    collectionView.insertItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: insertedIndices))
-                    if !reloadIndicies.isEmpty {
-                        collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
-                    }
-                },
-                completion: completion)
-        })
+        // Copy metadata of new messages to the outdated metadata array. Thus outdated and updated arrays will have the same size and computing diff between them will be much easier.
+        for insertedIndex in insertedIndices {
+            outdatedNodeMetadatas.insert(updatedNodeMetadatas[insertedIndex], atIndex: insertedIndex)
+        }
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
+        
+        collectionView.performBatchUpdates(
+            {
+                collectionView.insertItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: insertedIndices))
+                if !reloadIndicies.isEmpty {
+                    collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
+                }
+            },
+            completion: completion)
     }
-    
-    
+  
+  
     func collectionView(collectionView: ASCollectionView, deleteMessagesAtIndexPaths indexPaths: [NSIndexPath], completion: ((Bool) -> ())?) {
         if indexPaths.isEmpty {
             return
@@ -164,18 +159,16 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedNodeMetadatas
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodesMetadata, rhs: updatedNodeMetadatas)
-            
-            collectionView.performBatchUpdates(
-                {
-                    collectionView.deleteItemsAtIndexPaths(sortedIndexPaths)
-                    if !reloadIndicies.isEmpty {
-                        collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
-                    }
-                },
-                completion: completion)
-        })
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodesMetadata, rhs: updatedNodeMetadatas)
+        
+        collectionView.performBatchUpdates(
+            {
+                collectionView.deleteItemsAtIndexPaths(sortedIndexPaths)
+                if !reloadIndicies.isEmpty {
+                    collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
+                }
+            },
+            completion: completion)
     }
     
 }

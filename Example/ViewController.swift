@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: AsyncMessagesViewController {
+class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
 
     private let users: [User]
     private var currentUser: User? {
@@ -24,6 +24,8 @@ class ViewController: AsyncMessagesViewController {
         
         let dataSource = DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID)
         super.init(dataSource: dataSource)
+      
+        collectionView.asyncDelegate = self
     }
 
     required init(coder aDecoder: NSCoder) {
