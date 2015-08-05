@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
 
-pod 'AsyncDisplayKit', :git => 'git@github.com:facebook/AsyncDisplayKit.git', :commit => '3c822fe698'
+pod 'AsyncDisplayKit', '~> 1.2.3'
 pod 'SlackTextViewController', '~> 1.5'
 
 # Used by example target
