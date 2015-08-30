@@ -11,8 +11,8 @@ import Foundation
 class MessageTimestampFormatter {
     
     private let dateFormatter: NSDateFormatter
-    private let dateTextAttributes: [NSObject: AnyObject]
-    private let timeTextAttributes: [NSObject: AnyObject]
+    private let dateTextAttributes: [String: AnyObject]
+    private let timeTextAttributes: [String: AnyObject]
     
     init() {
         dateFormatter = NSDateFormatter()

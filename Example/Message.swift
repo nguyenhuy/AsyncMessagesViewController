@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class Message: MessageData {
+class Message: MessageData {
 
     private let _contentType: MessageDataContentType
     private let _content: String
@@ -22,27 +22,27 @@ import Foundation
         self.sender = sender
     }
     
-    func contentType() -> MessageDataContentType {
+    @objc func contentType() -> MessageDataContentType {
         return _contentType
     }
     
-    func content() -> String {
+    @objc func content() -> String {
         return _content
     }
     
-    func date() -> NSDate {
+    @objc func date() -> NSDate {
         return _date
     }
     
-    func senderID() -> String {
+    @objc func senderID() -> String {
         return sender.ID
     }
     
-    func senderDisplayName() -> String {
+    @objc func senderDisplayName() -> String {
         return sender.name
     }
     
-    func senderAvatarURL() -> NSURL {
+    @objc func senderAvatarURL() -> NSURL {
         return sender.avatarURL
     }
    
