@@ -62,10 +62,10 @@ class MessageCellNodeMetadataFactory {
         Generate flags indicate whether sender name should be shown for a given message or not.
         Sender name is shown if an incoming message is the fist one in consecutive ones sent by same sender.
     
-        :param: messages
-        :param: currentUserID used to detect outgoing messages.
+        - parameter messages:
+        - parameter currentUserID: used to detect outgoing messages.
     
-        :returns: flags in the same order as messages param. `true` if sender name should be shown. `false` otherwise.
+        - returns: flags in the same order as messages param. `true` if sender name should be shown. `false` otherwise.
     */
     private func showSenderNameFlagsForMessages(messages: [MessageData], currentUserID: String?) -> [Bool] {
         var result = Array<Bool>(count: messages.count, repeatedValue: false)
@@ -109,9 +109,9 @@ class MessageCellNodeMetadataFactory {
         Generate flags indicate whether date should be shown for a given message or not.
         Date is shown if a message is the first one in consecutive ones sent within 15 minutes.
     
-        :param: messages
+        - parameter messages:
         
-        :returns: flags in the same order as messages param. `true` if date should be shown. `false` otherwise.
+        - returns: flags in the same order as messages param. `true` if date should be shown. `false` otherwise.
     */
     private func showDateFlagsForMessages(messages: [MessageData]) -> [Bool] {
         let dateInterval: Double = 15 * 60 // 15 minutes
