@@ -44,9 +44,11 @@ class AsyncMessagesViewController: SLKTextViewController {
     }
     
     func scrollCollectionViewToBottom() {
-        let lastItemIndex = dataSource.collectionView(collectionView, numberOfItemsInSection: 0) - 1
-        let lastItemIndexPath = NSIndexPath(forItem: lastItemIndex, inSection: 0)
-        collectionView.scrollToItemAtIndexPath(lastItemIndexPath, atScrollPosition: .Bottom, animated: true)
+        let numberOfItems = dataSource.collectionView(collectionView, numberOfItemsInSection: 0)
+        if numberOfItems > 0 {
+            let lastItemIndexPath = NSIndexPath(forItem: numberOfItems - 1, inSection: 0)
+            collectionView.scrollToItemAtIndexPath(lastItemIndexPath, atScrollPosition: .Bottom, animated: true)
+        }
     }
     
 }
