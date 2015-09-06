@@ -27,7 +27,7 @@ class MessageCellNode: ASCellNode {
     private let avatarImageSize: CGFloat
     private let avatarImageNode: ASNetworkImageNode?
 
-    init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: NSURL?, senderAvatarImageSize: CGFloat, bubbleNode: ASDisplayNode) {
+    init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: NSURL?, senderAvatarImageSize: CGFloat = kAMMessageCellNodeAvatarImageSize, bubbleNode: ASDisplayNode) {
         self.isOutgoing = isOutgoing
 
         topTextNode = topText != nil ? ASTextNode() : nil

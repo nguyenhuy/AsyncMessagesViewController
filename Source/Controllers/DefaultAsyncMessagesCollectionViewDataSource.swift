@@ -66,7 +66,6 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
             contentTopText: senderDisplayName,
             bottomText: nil,
             senderAvatarURL: senderAvatarURL,
-            senderAvatarImageSize: kAMMessageCellNodeAvatarImageSize,
             bubbleNode: bubbleNode)
         
         return cellNode

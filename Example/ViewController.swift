@@ -16,6 +16,7 @@ class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
     }
     
     init() {
+        // Assume the default image size is used for message cell nodes
         let avatarImageSize = CGSizeMake(kAMMessageCellNodeAvatarImageSize, kAMMessageCellNodeAvatarImageSize)
         users = (0..<5).map() {
             let avatarURL = LoremIpsum.URLForPlaceholderImageFromService(.LoremPixel, withSize: avatarImageSize)
