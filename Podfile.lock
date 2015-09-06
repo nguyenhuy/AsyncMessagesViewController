@@ -3,14 +3,12 @@ PODS:
     - AsyncDisplayKit/ASDealloc2MainObject (= 1.2.2)
   - AsyncDisplayKit/ASDealloc2MainObject (1.2.2)
   - LoremIpsum (1.0.0)
-  - SlackTextViewController (1.5):
-    - SlackTextViewController/Additions (= 1.5)
-  - SlackTextViewController/Additions (1.5)
+  - SlackTextViewController (1.7)
 
 DEPENDENCIES:
   - AsyncDisplayKit (from `git@github.com:facebook/AsyncDisplayKit.git`, commit `de795d577a`)
   - LoremIpsum (~> 1.0)
-  - SlackTextViewController (~> 1.5)
+  - SlackTextViewController (~> 1.6)
 
 EXTERNAL SOURCES:
   AsyncDisplayKit:
@@ -25,6 +23,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AsyncDisplayKit: 70634bfc4bce38b0de85fec7da20a669fdbc8809
   LoremIpsum: 9029c55d36501b2ee0b05cc9ecda11d3a0479160
-  SlackTextViewController: 4a1797ac2f3616dbd37435fc62da655e61399cdd
+  SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.37.2
