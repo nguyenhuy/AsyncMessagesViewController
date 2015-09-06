@@ -26,12 +26,6 @@ func ==(lhs: MessageCellNodeMetadata, rhs: MessageCellNodeMetadata) -> Bool {
 
 class MessageCellNodeMetadataFactory {
     
-    private let messageBubbleImageProvider: MessageBubbleImageProvider
-    
-    init(messageBubbleImageProvider: MessageBubbleImageProvider = MessageBubbleImageProvider()) {
-        self.messageBubbleImageProvider = messageBubbleImageProvider
-    }
-    
     func buildMetadatas(messages: [MessageData], currentUserID: String?) -> [MessageCellNodeMetadata] {
         var result = [MessageCellNodeMetadata]()
         if messages.isEmpty {
