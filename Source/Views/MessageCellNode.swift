@@ -91,7 +91,7 @@ class MessageCellNode: ASCellNode {
 private extension Array {
     
     // Credits: http://stackoverflow.com/a/28190873/1136669
-    static func filterNils(array: [T?]) -> [T] {
+    static func filterNils(array: [Element?]) -> [Element] {
         return array.filter { $0 != nil }.map { $0! }
     }
     

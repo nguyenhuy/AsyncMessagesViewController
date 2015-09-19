@@ -112,7 +112,7 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let isOrderedBefore: (MessageData, MessageData) -> Bool = {
             $0.date().compare($1.date()) == NSComparisonResult.OrderedAscending
         }
-        for newMessage in newMessages.sorted(isOrderedBefore) {
+        for newMessage in newMessages.sort(isOrderedBefore) {
             insertedIndices.append(messages.insert(newMessage, isOrderedBefore: isOrderedBefore))
         }
         
@@ -147,7 +147,7 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let isOrderedBefore: (NSIndexPath, NSIndexPath) -> Bool = {
             $0.compare($1) == NSComparisonResult.OrderedDescending
         }
-        let sortedIndexPaths = indexPaths.sorted(isOrderedBefore)
+        let sortedIndexPaths = indexPaths.sort(isOrderedBefore)
         for indexPath in sortedIndexPaths {
             messages.removeAtIndex(indexPath.item)
             outdatedNodesMetadata.removeAtIndex(indexPath.item)
