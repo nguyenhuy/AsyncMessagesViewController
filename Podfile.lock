@@ -1,28 +1,18 @@
 PODS:
-  - AsyncDisplayKit (1.2.2):
-    - AsyncDisplayKit/ASDealloc2MainObject (= 1.2.2)
-  - AsyncDisplayKit/ASDealloc2MainObject (1.2.2)
+  - AsyncDisplayKit (1.9.2):
+    - AsyncDisplayKit/ASDealloc2MainObject (= 1.9.2)
+  - AsyncDisplayKit/ASDealloc2MainObject (1.9.2)
   - LoremIpsum (1.0.0)
   - SlackTextViewController (1.7)
 
 DEPENDENCIES:
-  - AsyncDisplayKit (from `git@github.com:facebook/AsyncDisplayKit.git`, commit `de795d577a`)
+  - AsyncDisplayKit (~> 1.9)
   - LoremIpsum (~> 1.0)
   - SlackTextViewController (~> 1.6)
 
-EXTERNAL SOURCES:
-  AsyncDisplayKit:
-    :commit: de795d577a
-    :git: git@github.com:facebook/AsyncDisplayKit.git
-
-CHECKOUT OPTIONS:
-  AsyncDisplayKit:
-    :commit: de795d577a
-    :git: git@github.com:facebook/AsyncDisplayKit.git
-
 SPEC CHECKSUMS:
-  AsyncDisplayKit: 70634bfc4bce38b0de85fec7da20a669fdbc8809
+  AsyncDisplayKit: 181097819b528d9337983acc5040df6687f06369
   LoremIpsum: 9029c55d36501b2ee0b05cc9ecda11d3a0479160
   SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
