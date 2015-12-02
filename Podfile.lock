@@ -8,7 +8,7 @@ PODS:
 DEPENDENCIES:
   - AsyncDisplayKit (~> 1.9)
   - LoremIpsum (~> 1.0)
-  - SlackTextViewController (~> 1.6)
+  - SlackTextViewController (~> 1.7)
 
 SPEC CHECKSUMS:
   AsyncDisplayKit: 181097819b528d9337983acc5040df6687f06369
