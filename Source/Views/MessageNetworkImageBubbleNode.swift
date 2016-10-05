@@ -11,8 +11,8 @@ import Foundation
 class MessageNetworkImageBubbleNodeFactory: MessageBubbleNodeFactory {
     
     func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode {
-        let URL = NSURL(string: message.content())
-        return MessageNetworkImageBubbleNode(URL: URL, bubbleImage: bubbleImage)
+        let url = URL(string: message.content())
+        return MessageNetworkImageBubbleNode(url: url, bubbleImage: bubbleImage)
     }
     
 }
@@ -21,16 +21,16 @@ class MessageNetworkImageBubbleNode: ASNetworkImageNode {
     private let minSize: CGSize
     private let bubbleImage: UIImage
     
-    init(URL: NSURL?, bubbleImage: UIImage, minSize: CGSize = CGSizeMake(210, 150)) {
+    init(url: URL?, bubbleImage: UIImage, minSize: CGSize = CGSize(width: 210, height: 150)) {
         self.minSize = minSize
         self.bubbleImage = bubbleImage
-        super.init(cache: nil, downloader: ASBasicImageDownloader())
+        super.init(cache: nil, downloader: ASBasicImageDownloader.shared())
 
-        self.URL = URL
+        self.url = url
     }
     
-    override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
-        return CGSizeMake(min(constrainedSize.width, minSize.width), min(constrainedSize.height, minSize.height))
+    override func calculateSizeThatFits(_ constrainedSize: CGSize) -> CGSize {
+        return CGSize(width: min(constrainedSize.width, minSize.width), height: min(constrainedSize.height, minSize.height))
     }
     
     override func didLoad() {

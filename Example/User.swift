@@ -12,9 +12,9 @@ class User {
     
     let ID: String
     let name: String
-    let avatarURL: NSURL
+    let avatarURL: URL
     
-    init(ID: String, name: String, avatarURL: NSURL) {
+    init(ID: String, name: String, avatarURL: URL) {
         self.ID = ID
         self.name = name
         self.avatarURL = avatarURL

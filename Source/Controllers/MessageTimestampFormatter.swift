@@ -10,47 +10,47 @@ import Foundation
 
 class MessageTimestampFormatter {
     
-    private let dateFormatter: NSDateFormatter
+    private let dateFormatter: DateFormatter
     private let dateTextAttributes: [String: AnyObject]
     private let timeTextAttributes: [String: AnyObject]
     
     init() {
-        dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
+        dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale.current
         dateFormatter.doesRelativeDateFormatting = true
 
-        let color = UIColor.lightGrayColor()
+        let color = UIColor.lightGray
 
         dateTextAttributes = [
-            NSFontAttributeName: UIFont.boldSystemFontOfSize(12),
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12),
             NSForegroundColorAttributeName: color
         ]
         
         timeTextAttributes = [
-            NSFontAttributeName: UIFont.systemFontOfSize(12),
+            NSFontAttributeName: UIFont.systemFont(ofSize: 12),
             NSForegroundColorAttributeName: color
         ]
     }
 
-    func attributedTimestamp(date: NSDate) -> NSAttributedString {
-        let relativeDate = relativeDateString(date)
-        let time = timeString(date)
+    func attributedTimestamp(date: Date) -> NSAttributedString {
+        let relativeDate = relativeDateString(date: date)
+        let time = timeString(date: date)
         let timestamp = NSMutableAttributedString(string: relativeDate, attributes: dateTextAttributes)
-        timestamp.appendAttributedString(NSAttributedString(string: " "))
-        timestamp.appendAttributedString(NSAttributedString(string: time, attributes: timeTextAttributes))
+        timestamp.append(NSAttributedString(string: " "))
+        timestamp.append(NSAttributedString(string: time, attributes: timeTextAttributes))
         return timestamp
     }
     
-    private func timeString(date: NSDate) -> String {
-        dateFormatter.dateStyle = .NoStyle
-        dateFormatter.timeStyle = .ShortStyle
-        return dateFormatter.stringFromDate(date)
+    private func timeString(date: Date) -> String {
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
     }
 
-    private func relativeDateString(date: NSDate) -> String {
-        dateFormatter.dateStyle = .MediumStyle
-        dateFormatter.timeStyle = .NoStyle
-        return dateFormatter.stringFromDate(date)
+    private func relativeDateString(date: Date) -> String {
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
     }
     
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-//TODO: Make AsyncMessagesCollectionViewDataSource's methods thread-safe.
 class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesCollectionViewDataSource {
     
     private let nodeMetadataFactory: MessageCellNodeMetadataFactory
@@ -38,27 +37,28 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
     }
 
     //MARK: ASCollectionViewDataSource methods
-    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         assert(nodeMetadatas.count == messages.count, "Node metadata is required for each message.")
         return messages.count
     }
 
-    func collectionView(collectionView: ASCollectionView!, nodeForItemAtIndexPath indexPath: NSIndexPath!) -> ASCellNode! {
-        let message = self.collectionView(collectionView, messageForItemAtIndexPath: indexPath)
+    //TODO Use node block
+    func collectionView(_ collectionView: ASCollectionView, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
+        let message = self.collectionView(collectionView: collectionView, messageForItemAtIndexPath: indexPath)
         let metadata = nodeMetadatas[indexPath.item]
         let isOutgoing = metadata.isOutgoing
 
-        let senderAvatarURL: NSURL? = metadata.showsSenderAvatar ? message.senderAvatarURL() : nil
+        let senderAvatarURL: URL? = metadata.showsSenderAvatar ? message.senderAvatarURL() : nil
         let messageDate: NSAttributedString? = metadata.showsDate
-            ? timestampFormatter.attributedTimestamp(message.date())
+            ? timestampFormatter.attributedTimestamp(date: message.date())
             : nil
         let senderDisplayName: NSAttributedString? = metadata.showsSenderName
             ? NSAttributedString(string: message.senderDisplayName(), attributes: kAMMessageCellNodeContentTopTextAttributes)
             : nil
         
-        let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing, hasTail: metadata.showsTailForBubbleImage)
-        assert(bubbleNodeFactories.indexForKey(message.contentType()) != nil, "No bubble node factory for content type: \(message.contentType())")
-        let bubbleNode = bubbleNodeFactories[message.contentType()]!.build(message, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
+        let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing: isOutgoing, hasTail: metadata.showsTailForBubbleImage)
+        assert(bubbleNodeFactories.index(forKey: message.contentType()) != nil, "No bubble node factory for content type: \(message.contentType())")
+        let bubbleNode = bubbleNodeFactories[message.contentType()]!.build(message: message, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
         
         let cellNode = MessageCellNode(
             isOutgoing: isOutgoing,
@@ -71,10 +71,10 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         return cellNode
     }
   
-    func collectionView(collectionView: ASCollectionView!, constrainedSizeForNodeAtIndexPath indexPath: NSIndexPath!) -> ASSizeRange {
+    func collectionView(_ collectionView: ASCollectionView, constrainedSizeForNodeAt indexPath: IndexPath) -> ASSizeRange {
         let width = collectionView.bounds.width;
         // Assume horizontal scroll directions
-        return ASSizeRangeMake(CGSizeMake(width, 0), CGSizeMake(width, CGFloat.max))
+        return ASSizeRangeMake(CGSize(width: width, height: 0), CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
     }
 
     //MARK: AsyncMessagesCollectionViewDataSource methods
@@ -90,14 +90,14 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         _currentUserID = newUserID
         
         let outdatedMetadatas = nodeMetadatas
-        let updatedMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
+        let updatedMetadatas = nodeMetadataFactory.buildMetadatas(for: messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedMetadatas
         
-        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedMetadatas, rhs: updatedMetadatas)
-        collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedMetadatas, rhs: updatedMetadatas)
+        collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
     }
 
-    func collectionView(collectionView: ASCollectionView, messageForItemAtIndexPath indexPath: NSIndexPath) -> MessageData {
+    func collectionView(collectionView: ASCollectionView, messageForItemAtIndexPath indexPath: IndexPath) -> MessageData {
         return messages[indexPath.item]
     }
     
@@ -110,59 +110,59 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         var insertedIndices = [Int]()
         // Sort new messages to make sure insertion starts from the begining of the array and previous insertion indicies are always valid.
         let isOrderedBefore: (MessageData, MessageData) -> Bool = {
-            $0.date().compare($1.date()) == NSComparisonResult.OrderedAscending
+            $0.date().compare($1.date()) == ComparisonResult.orderedAscending
         }
-        for newMessage in newMessages.sort(isOrderedBefore) {
-            insertedIndices.append(messages.insert(newMessage, isOrderedBefore: isOrderedBefore))
+        for newMessage in newMessages.sorted(by: isOrderedBefore) {
+            insertedIndices.append(messages.insert(newElement: newMessage, isOrderedBefore: isOrderedBefore))
         }
         
         var outdatedNodeMetadatas = nodeMetadatas
-        let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
+        let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(for: messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedNodeMetadatas
 
         // Copy metadata of new messages to the outdated metadata array. Thus outdated and updated arrays will have the same size and computing diff between them will be much easier.
         for insertedIndex in insertedIndices {
-            outdatedNodeMetadatas.insert(updatedNodeMetadatas[insertedIndex], atIndex: insertedIndex)
+            outdatedNodeMetadatas.insert(updatedNodeMetadatas[insertedIndex], at: insertedIndex)
         }
-        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
         
         collectionView.performBatchUpdates(
             {
-                collectionView.insertItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: insertedIndices))
+                collectionView.insertItems(at: IndexPath.createIndexPaths(section: 0, items: insertedIndices))
                 if !reloadIndicies.isEmpty {
-                    collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
+                    collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
                 }
             },
             completion: completion)
     }
   
   
-    func collectionView(collectionView: ASCollectionView, deleteMessagesAtIndexPaths indexPaths: [NSIndexPath], completion: ((Bool) -> ())?) {
+    func collectionView(collectionView: ASCollectionView, deleteMessagesAtIndexPaths indexPaths: [IndexPath], completion: ((Bool) -> ())?) {
         if indexPaths.isEmpty {
             return
         }
 
         var outdatedNodesMetadata = nodeMetadatas
         // Sort indicies in descending order to make sure deletion starts from the end of the array and remaining indicies are always valid.
-        let isOrderedBefore: (NSIndexPath, NSIndexPath) -> Bool = {
-            $0.compare($1) == NSComparisonResult.OrderedDescending
+        let isOrderedBefore: (IndexPath, IndexPath) -> Bool = {
+            $0.compare($1) == ComparisonResult.orderedDescending
         }
-        let sortedIndexPaths = indexPaths.sort(isOrderedBefore)
+        let sortedIndexPaths = indexPaths.sorted(by: isOrderedBefore)
         for indexPath in sortedIndexPaths {
-            messages.removeAtIndex(indexPath.item)
-            outdatedNodesMetadata.removeAtIndex(indexPath.item)
+            messages.remove(at: indexPath.item)
+            outdatedNodesMetadata.remove(at: indexPath.item)
         }
 
-        let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(messages, currentUserID: _currentUserID)
+        let updatedNodeMetadatas = nodeMetadataFactory.buildMetadatas(for: messages, currentUserID: _currentUserID)
         nodeMetadatas = updatedNodeMetadatas
 
-        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(outdatedNodesMetadata, rhs: updatedNodeMetadatas)
+        let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedNodesMetadata, rhs: updatedNodeMetadatas)
         
         collectionView.performBatchUpdates(
             {
-                collectionView.deleteItemsAtIndexPaths(sortedIndexPaths)
+                collectionView.deleteItems(at: sortedIndexPaths)
                 if !reloadIndicies.isEmpty {
-                    collectionView.reloadItemsAtIndexPaths(NSIndexPath.createIndexPaths(0, items: reloadIndicies))
+                    collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
                 }
             },
             completion: completion)
@@ -174,8 +174,8 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
 private extension Array {
 
     mutating func insert(newElement: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
-        let index = insertionIndex(newElement, isOrderedBefore: isOrderedBefore)
-        insert(newElement, atIndex: index)
+        let index = insertionIndex(newElement: newElement, isOrderedBefore: isOrderedBefore)
+        insert(newElement, at: index)
         return index
     }
     
@@ -198,7 +198,7 @@ private extension Array {
         return low
     }
     
-    static func computeDiff<T where T: Equatable>(lhs: Array<T>, rhs: Array<T>) -> [Int] {
+    static func computeDiff<T>(lhs: Array<T>, rhs: Array<T>) -> [Int] where T: Equatable {
         assert(lhs.count == rhs.count, "Expect arrays with the same size.")
         var diffIndices = [Int]()
         for i in 0..<lhs.count {
@@ -211,11 +211,11 @@ private extension Array {
     
 }
 
-private extension NSIndexPath {
+private extension IndexPath {
     
-    class func createIndexPaths(section: Int, items: [Int]) -> [NSIndexPath] {
+    static func createIndexPaths(section: Int, items: [Int]) -> [IndexPath] {
         return items.map() {
-            NSIndexPath(forItem: $0, inSection: section)
+            IndexPath(item: $0, section: section)
         }
     }
     

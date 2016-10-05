@@ -8,25 +8,37 @@
 
 import Foundation
 
+enum ImageMaskingError: Error {
+    case insufficientParams
+    case failedToGetImage
+}
+
 extension UIImage {
     
-    func imageMaskedWith(color: UIColor) -> UIImage {
-        let imageRect = CGRectMake(0, 0, size.width, size.height)
+    func imageMaskedWith(color: UIColor) throws -> UIImage {
+        let imageRect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        var newImage: UIImage?
         
         UIGraphicsBeginImageContextWithOptions(imageRect.size, false, scale)
-        let context = UIGraphicsGetCurrentContext()
-        
-        CGContextScaleCTM(context, 1, -1)
-        CGContextTranslateCTM(context, 0, -(imageRect.size.height))
-        
-        CGContextClipToMask(context, imageRect, CGImage)
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, imageRect)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
+        if let context = UIGraphicsGetCurrentContext(), let cgImage = self.cgImage {
+            context.scaleBy(x: 1, y: -1)
+            context.translateBy(x: 0, y: -(imageRect.size.height))
+            context.clip(to: imageRect, mask: cgImage)
+            context.setFillColor(color.cgColor)
+            context.fill(imageRect)
+            
+            defer {
+                UIGraphicsEndImageContext()
+            }
+            
+            guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
+                throw ImageMaskingError.failedToGetImage
+            }
+            
+            return newImage
+        } else {
+            throw ImageMaskingError.insufficientParams
+        }
     }
     
 }

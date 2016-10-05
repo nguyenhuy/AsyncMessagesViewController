@@ -8,10 +8,10 @@
 
 import Foundation
 
-private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
-    NSFontAttributeName: UIFont.systemFontOfSize(14)]
-private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(),
-    NSFontAttributeName: UIFont.systemFontOfSize(14)]
+private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorAttributeName: UIColor.black,
+    NSFontAttributeName: UIFont.systemFont(ofSize: 14)]
+private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.white,
+    NSFontAttributeName: UIFont.systemFont(ofSize: 14)]
 
 class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
     
@@ -29,11 +29,11 @@ private class MessageTextNode: ASTextNode {
     
     override init() {
         super.init()
-        placeholderColor = UIColor.clearColor()
-        layerBacked = true
+        placeholderColor = UIColor.clear
+        isLayerBacked = true
     }
     
-    override func calculateSizeThatFits(constrainedSize: CGSize) -> CGSize {
+    override func calculateSizeThatFits(_ constrainedSize: CGSize) -> CGSize {
         let size = super.calculateSizeThatFits(constrainedSize)
         return CGSize(width: max(size.width, 15), height: size.height)
     }
@@ -61,7 +61,7 @@ class MessageTextBubbleNode: ASDisplayNode {
         addSubnode(textNode)
     }
     
-    override func layoutSpecThatFits(constrainedSize: ASSizeRange) -> ASLayoutSpec! {
+    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let textNodeVerticalOffset = CGFloat(6)
         return ASBackgroundLayoutSpec(
             child: ASInsetLayoutSpec(

@@ -12,10 +12,10 @@ class Message: MessageData {
 
     private let _contentType: MessageDataContentType
     private let _content: String
-    private let _date: NSDate
+    private let _date: Date
     private let sender: User
     
-    init(contentType: MessageDataContentType, content: String, date: NSDate, sender: User) {
+    init(contentType: MessageDataContentType, content: String, date: Date, sender: User) {
         _contentType = contentType
         _content = content
         _date = date
@@ -30,7 +30,7 @@ class Message: MessageData {
         return _content
     }
     
-    @objc func date() -> NSDate {
+    @objc func date() -> Date {
         return _date
     }
     
@@ -42,7 +42,7 @@ class Message: MessageData {
         return sender.name
     }
     
-    @objc func senderAvatarURL() -> NSURL {
+    @objc func senderAvatarURL() -> URL {
         return sender.avatarURL
     }
    

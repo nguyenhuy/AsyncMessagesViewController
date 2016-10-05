@@ -18,12 +18,12 @@ let kAMMessageDataContentTypeNetworkImage: MessageDataContentType = 1
     
     func content() -> String
     
-    func date() -> NSDate
+    func date() -> Date
     
     func senderID() -> String
     
     func senderDisplayName() -> String
     
-    func senderAvatarURL() -> NSURL
+    func senderAvatarURL() -> URL
     
 }

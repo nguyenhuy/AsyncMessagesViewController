@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
+class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
 
     private let users: [User]
     private var currentUser: User? {
@@ -17,10 +17,10 @@ class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
     
     init() {
         // Assume the default image size is used for message cell nodes
-        let avatarImageSize = CGSizeMake(kAMMessageCellNodeAvatarImageSize, kAMMessageCellNodeAvatarImageSize)
+        let avatarImageSize = CGSize(width: kAMMessageCellNodeAvatarImageSize, height: kAMMessageCellNodeAvatarImageSize)
         users = (0..<5).map() {
-            let avatarURL = LoremIpsum.URLForPlaceholderImageFromService(.LoremPixel, withSize: avatarImageSize)
-            return User(ID: "user-\($0)", name: LoremIpsum.name(), avatarURL: avatarURL)
+            let avatarURL = LoremIpsum.urlForPlaceholderImage(from: .loremPixel, with: avatarImageSize)
+            return User(ID: "user-\($0)", name: LoremIpsum.name(), avatarURL: avatarURL!)
         }
         
         let dataSource = DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID)
@@ -34,28 +34,28 @@ class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
         collectionView.asyncDelegate = nil
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change user", style: .Plain, target: self, action: "changeCurrentUser")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change user", style: .plain, target: self, action: #selector(ViewController.changeCurrentUser))
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         generateMessages()
     }
     
-    override func didPressRightButton(sender: AnyObject!) {
+    override func didPressRightButton(_ sender: Any?) {
         if let user = currentUser {
             let message = Message(
                 contentType: kAMMessageDataContentTypeText,
                 content: textView.text,
-                date: NSDate(),
+                date: Date(),
                 sender: user)
-            dataSource.collectionView(collectionView, insertMessages: [message]) {completed in
+            dataSource.collectionView(collectionView: collectionView, insertMessages: [message]) {completed in
                 self.scrollCollectionViewToBottom()
             }
         }
@@ -68,14 +68,16 @@ class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
             let isTextMessage = arc4random_uniform(4) <= 2 // 75%
             let contentType = isTextMessage ? kAMMessageDataContentTypeText : kAMMessageDataContentTypeNetworkImage
             let content = isTextMessage
-                ? LoremIpsum.wordsWithNumber((random() % 100) + 1)
-                : LoremIpsum.URLForPlaceholderImageFromService(.LoremPixel, withSize: CGSizeMake(200, 200)).absoluteString
+                ? LoremIpsum.words(withNumber: Int(arc4random_uniform(100)) + 1) as String
+                : LoremIpsum.urlForPlaceholderImage(from: .loremPixel, with: CGSize(width: 200, height: 200)).absoluteString
 
-            let sender = users[random() % users.count]
+            let sender = users[Int(arc4random_uniform(UInt32(users.count)))]
             
-            let previousMessage: Message? = i > 0 ? messages[i - 1] : nil
-            let hasSameSender = (sender.ID == previousMessage?.senderID()) ?? false
-            let date = hasSameSender ? previousMessage!.date().dateByAddingTimeInterval(5) : LoremIpsum.date()
+            let previousMessage: Message? = (i > 0) ? messages[i - 1] : nil
+            let hasSameSender = (previousMessage != nil)
+                ? (sender.ID == previousMessage!.senderID())
+                : false
+            let date = hasSameSender ? previousMessage!.date().addingTimeInterval(5) : LoremIpsum.date() as Date
             
             let message = Message(
                 contentType: contentType,
@@ -84,13 +86,13 @@ class ViewController: AsyncMessagesViewController, ASCollectionViewDelegate {
                 sender: sender)
             messages.append(message)
         }
-        dataSource.collectionView(collectionView, insertMessages: messages, completion: nil)
+        dataSource.collectionView(collectionView: collectionView, insertMessages: messages, completion: nil)
     }
     
     func changeCurrentUser() {
         let otherUsers = users.filter({$0.ID != self.dataSource.currentUserID()})
-        let newUser = otherUsers[random() % otherUsers.count]
-        dataSource.collectionView(collectionView, updateCurrentUserID: newUser.ID)
+        let newUser = otherUsers[Int(arc4random_uniform(UInt32(otherUsers.count)))]
+        dataSource.collectionView(collectionView: collectionView, updateCurrentUserID: newUser.ID)
     }
 
 }
