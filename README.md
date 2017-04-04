@@ -25,7 +25,7 @@ Can't do it? Well I'm sorry but the pod won't be available until AsyncDisplayKit
 ### Without CocoaPods
 Copy the `Source\` directory to your project and install all dependencies.
 
-##How to use
+## How to use
 * **Example project**
   * Run `pod install`.
   * Open `AsyncMessagesViewController.xcworkspace`.
@@ -44,9 +44,9 @@ Copy the `Source\` directory to your project and install all dependencies.
     * Most of the time, inserting/deleting a cell causing UI changes in other cells as well. `DefaultAsyncMessagesCollectionViewDataSource` can detect those changes automatically.
   * `MessageCellNodeMetadata` provides runtime-computed information about a message and how its data should be presented in a `MessageCellNode`. Metadata of a message is often computed based on the relationship with other messages. For example, message's sender name should be displayed if it is an incoming message and is the first one in a set of consecutive messages sent by a same user. Or message's date should be shown if it is the first message sent within a 15 minutes window. This kind of UI logic is encapsulated in `MessageCellNodeMetadataFactory` and computed at runtime. Of course you can [implement your own logic](#customizations).
 
-##Customizations
+## Customizations
   * Custom bubble node:
-    * Please read [this guide](http://asyncdisplaykit.org/guide/2) on writting a custom `ASDisplayNode`.
+    * Please read [this guide](http://asyncdisplaykit.org/docs/subclassing.html) on writting a custom `ASDisplayNode`.
     * Implement a factory that conforms to `MessageBubbleNodeFactory` protocol.
     * Inject your factory to `DefaultAsyncMessagesCollectionViewDataSource` via its initializer.
     * Inject the data source to `AsyncMessagesViewController` (also via its initializer).
@@ -71,14 +71,14 @@ Copy the `Source\` directory to your project and install all dependencies.
   * Other customizations:
     * File an issue and I will be more than happy to help :)
     
-##Contributing
+## Contributing
 All feedbacks, questions and pull requests are very welcome. See [here](CONTRIBUTING.md) for details.
 
 ##Credits
 Created by [Huy Nguyen](http://huytnguyen.me), an Android developer :)
 * Inspried by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [Atlas](https://github.com/layerhq/Atlas-iOS).
  
-##License
+## License
 `AsyncMessagesViewController` is released under an [MIT License](http://opensource.org/licenses/MIT). See [here](LICENSE) for details.
 
 >**Copyright &copy; 2015 Huy Nguyen.**
