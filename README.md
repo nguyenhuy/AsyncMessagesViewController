@@ -74,7 +74,7 @@ Copy the `Source\` directory to your project and install all dependencies.
 ## Contributing
 All feedbacks, questions and pull requests are very welcome. See [here](CONTRIBUTING.md) for details.
 
-##Credits
+## Credits
 Created by [Huy Nguyen](http://huytnguyen.me), an Android developer :)
 * Inspried by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [Atlas](https://github.com/layerhq/Atlas-iOS).
  
