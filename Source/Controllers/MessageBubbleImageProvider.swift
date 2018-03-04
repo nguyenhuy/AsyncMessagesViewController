@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Huy Nguyen. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 private struct MessageProperties: Hashable {
     let isOutgoing: Bool

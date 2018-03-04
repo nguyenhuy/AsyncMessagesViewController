@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Huy Nguyen. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum ImageMaskingError: Error {
     case insufficientParams

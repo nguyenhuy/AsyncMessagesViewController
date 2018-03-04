@@ -6,16 +6,17 @@
 //  Copyright (c) 2015 Huy Nguyen. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import AsyncDisplayKit
 
 let kAMMessageCellNodeAvatarImageSize: CGFloat = 34
 
-let kAMMessageCellNodeTopTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGray,
-                                           NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12)]
-let kAMMessageCellNodeContentTopTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGray,
-                                                  NSFontAttributeName: UIFont.systemFont(ofSize: 12)]
-let kAMMessageCellNodeBottomTextAttributes = [NSForegroundColorAttributeName: UIColor.lightGray,
-                                              NSFontAttributeName: UIFont.systemFont(ofSize: 11)]
+let kAMMessageCellNodeTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
+                                           NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]
+let kAMMessageCellNodeContentTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
+                                                  NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+let kAMMessageCellNodeBottomTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
+                                              NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11)]
 
 class MessageCellNode: ASCellNode {
     
@@ -32,26 +33,26 @@ class MessageCellNode: ASCellNode {
 
         topTextNode = topText != nil ? ASTextNode() : nil
         topTextNode?.isLayerBacked = true
-        topTextNode?.attributedString = topText
-        topTextNode?.alignSelf = .center
+        topTextNode?.attributedText = topText
+        topTextNode?.style.alignSelf = .center
 
         contentTopTextNode = contentTopText != nil ? ASTextNode() : nil
         contentTopTextNode?.isLayerBacked = true
-        contentTopTextNode?.attributedString = contentTopText
+        contentTopTextNode?.attributedText = contentTopText
         
         avatarImageSize = senderAvatarImageSize
         avatarImageNode = avatarImageSize > 0 ? ASNetworkImageNode() : nil
-        avatarImageNode?.preferredFrameSize = CGSize(width: avatarImageSize, height: avatarImageSize)
+        avatarImageNode?.style.preferredSize = CGSize(width: avatarImageSize, height: avatarImageSize)
         avatarImageNode?.backgroundColor = UIColor.clear
         avatarImageNode?.imageModificationBlock = ASImageNodeRoundBorderModificationBlock(0, nil)
         avatarImageNode?.url = senderAvatarURL
         
         self.bubbleNode = bubbleNode
-        self.bubbleNode.flexShrink = true
+        self.bubbleNode.style.flexShrink = 1
         
         bottomTextNode = bottomText != nil ? ASTextNode() : nil
         bottomTextNode?.isLayerBacked = true
-        bottomTextNode?.attributedString = bottomText
+        bottomTextNode?.attributedText = bottomText
 
         super.init()
         
@@ -65,7 +66,7 @@ class MessageCellNode: ASCellNode {
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let unfilteredChildren: [ASLayoutable?] = [
+        let unfilteredChildren: [ASLayoutElement?] = [
             topTextNode,
             (contentTopTextNode != nil)
                 ? ASInsetLayoutSpec(insets: UIEdgeInsetsMake(0, 22 + avatarImageSize, 0, 0), child: contentTopTextNode!)

@@ -3,5 +3,3 @@
 //
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
 #import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
-#import "SLKTextViewController.h"
-#import "LoremIpsum.h"

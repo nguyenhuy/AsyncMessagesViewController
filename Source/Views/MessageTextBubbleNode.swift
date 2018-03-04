@@ -6,12 +6,13 @@
 //  Copyright (c) 2015 Huy Nguyen. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import AsyncDisplayKit
 
-private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSForegroundColorAttributeName: UIColor.black,
-    NSFontAttributeName: UIFont.systemFont(ofSize: 14)]
-private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSForegroundColorAttributeName: UIColor.white,
-    NSFontAttributeName: UIFont.systemFont(ofSize: 14)]
+private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black,
+    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
+private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white,
+    NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
 
 class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
     
@@ -53,7 +54,7 @@ class MessageTextBubbleNode: ASDisplayNode {
         bubbleImageNode.image = bubbleImage
 
         textNode = MessageTextNode()
-        textNode.attributedString = text
+        textNode.attributedText = text
         
         super.init()
         
