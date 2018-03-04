@@ -42,7 +42,6 @@
 		AC8B65DC1A9373DA00131D84 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AC90D5FC1AA1A68F0042C0D4 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AC90D5FD1AA1A68F0042C0D4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		AC90D6001AA1A7380042C0D4 /* Example-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		ACC6EF4C1AA1A870002B76A9 /* AsyncMessagesViewController.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AsyncMessagesViewController.xcassets; sourceTree = "<group>"; };
 		ACC6EF4E1AA1A870002B76A9 /* AsyncMessagesCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncMessagesCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		ACC6EF4F1AA1A870002B76A9 /* AsyncMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncMessagesViewController.swift; sourceTree = "<group>"; };
@@ -114,7 +113,6 @@
 		AC8B65CF1A9373DA00131D84 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				AC90D6001AA1A7380042C0D4 /* Example-Bridging-Header.h */,
 				AC8B65D21A9373DA00131D84 /* AppDelegate.swift */,
 				AC8B66261A9378D500131D84 /* Model */,
 				AC8B66271A9378DE00131D84 /* Controller */,
@@ -486,7 +484,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.huytnguyen.AsyncMessagesViewController.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -507,7 +505,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.huytnguyen.AsyncMessagesViewController.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
