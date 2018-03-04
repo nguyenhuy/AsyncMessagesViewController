@@ -9,16 +9,14 @@
 import UIKit
 import AsyncDisplayKit
 
-let kAMMessageCellNodeAvatarImageSize: CGFloat = 34
+public let kAMMessageCellNodeAvatarImageSize: CGFloat = 34
 
-let kAMMessageCellNodeTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
+public let kAMMessageCellNodeTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
                                            NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]
-let kAMMessageCellNodeContentTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
-                                                  NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
-let kAMMessageCellNodeBottomTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
-                                              NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11)]
+public let kAMMessageCellNodeContentTopTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+public let kAMMessageCellNodeBottomTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11)]
 
-class MessageCellNode: ASCellNode {
+open class MessageCellNode: ASCellNode {
     
     private let isOutgoing: Bool
     private let topTextNode: ASTextNode?
@@ -28,7 +26,7 @@ class MessageCellNode: ASCellNode {
     private let avatarImageSize: CGFloat
     private let avatarImageNode: ASNetworkImageNode?
 
-    init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: URL?, senderAvatarImageSize: CGFloat = kAMMessageCellNodeAvatarImageSize, bubbleNode: ASDisplayNode) {
+    public init(isOutgoing: Bool, topText: NSAttributedString?, contentTopText: NSAttributedString?, bottomText: NSAttributedString?, senderAvatarURL: URL?, senderAvatarImageSize: CGFloat = kAMMessageCellNodeAvatarImageSize, bubbleNode: ASDisplayNode) {
         self.isOutgoing = isOutgoing
 
         topTextNode = topText != nil ? ASTextNode() : nil
@@ -65,7 +63,7 @@ class MessageCellNode: ASCellNode {
         selectionStyle = .none
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    open override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let unfilteredChildren: [ASLayoutElement?] = [
             topTextNode,
             (contentTopTextNode != nil)

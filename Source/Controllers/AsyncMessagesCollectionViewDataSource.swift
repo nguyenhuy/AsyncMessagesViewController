@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 
 //TODO revise method name to adhere to Swift 3 convention
-protocol AsyncMessagesCollectionViewDataSource: ASCollectionDataSource {
+public protocol AsyncMessagesCollectionViewDataSource: ASCollectionDataSource {
     
     func currentUserID() -> String?
     

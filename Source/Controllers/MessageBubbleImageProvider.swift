@@ -21,21 +21,21 @@ private func ==(lhs: MessageProperties, rhs: MessageProperties) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-private let kDefaultIncomingColor = UIColor(red: 239 / 255, green: 237 / 255, blue: 237 / 255, alpha: 1)
-private let kDefaultOutgoingColor = UIColor(red: 17 / 255, green: 107 / 255, blue: 254 / 255, alpha: 1)
+public let kDefaultIncomingColor = UIColor(red: 239 / 255, green: 237 / 255, blue: 237 / 255, alpha: 1)
+public let kDefaultOutgoingColor = UIColor(red: 17 / 255, green: 107 / 255, blue: 254 / 255, alpha: 1)
 
-class MessageBubbleImageProvider {
+open class MessageBubbleImageProvider {
     
     private let outgoingColor: UIColor
     private let incomingColor: UIColor
     private var imageCache = [MessageProperties: UIImage]()
     
-    init(incomingColor: UIColor = kDefaultIncomingColor, outgoingColor: UIColor = kDefaultOutgoingColor) {
+    public init(incomingColor: UIColor = kDefaultIncomingColor, outgoingColor: UIColor = kDefaultOutgoingColor) {
         self.incomingColor = incomingColor
         self.outgoingColor = outgoingColor
     }
     
-    func bubbleImage(isOutgoing: Bool, hasTail: Bool) -> UIImage {
+    open func bubbleImage(isOutgoing: Bool, hasTail: Bool) -> UIImage {
         let properties = MessageProperties(isOutgoing: isOutgoing, hasTail: hasTail)
         return bubbleImage(properties: properties)
     }

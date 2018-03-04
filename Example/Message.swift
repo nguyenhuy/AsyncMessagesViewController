@@ -22,27 +22,27 @@ class Message: MessageData {
         self.sender = sender
     }
     
-    @objc func contentType() -> MessageDataContentType {
+    func contentType() -> MessageDataContentType {
         return _contentType
     }
     
-    @objc func content() -> String {
+    func content() -> String {
         return _content
     }
     
-    @objc func date() -> Date {
+    func date() -> Date {
         return _date
     }
     
-    @objc func senderID() -> String {
+    func senderID() -> String {
         return sender.ID
     }
     
-    @objc func senderDisplayName() -> String {
+    func senderDisplayName() -> String {
         return sender.name
     }
     
-    @objc func senderAvatarURL() -> URL {
+    func senderAvatarURL() -> URL {
         return sender.avatarURL
     }
    

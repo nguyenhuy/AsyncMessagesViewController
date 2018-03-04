@@ -6,25 +6,28 @@
 //  Copyright (c) 2015 Huy Nguyen. All rights reserved.
 //
 
-struct MessageCellNodeMetadata: Hashable {
+public struct MessageCellNodeMetadata: Hashable {
     let isOutgoing: Bool
     let showsSenderName: Bool
     let showsSenderAvatar: Bool
     let showsTailForBubbleImage: Bool
     let showsDate: Bool
     
-    var hashValue: Int {
+    public var hashValue: Int {
         return (24 &* isOutgoing.hashValue) &+ (18 &* showsSenderName.hashValue) &+ (12 &* showsSenderAvatar.hashValue) &+ (6 &* showsTailForBubbleImage.hashValue) &+ showsDate.hashValue
     }
 }
 
-func ==(lhs: MessageCellNodeMetadata, rhs: MessageCellNodeMetadata) -> Bool {
+public func ==(lhs: MessageCellNodeMetadata, rhs: MessageCellNodeMetadata) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class MessageCellNodeMetadataFactory {
+open class MessageCellNodeMetadataFactory {
+
+    public init(){
+    }
     
-    func buildMetadatas(for messages: [MessageData], currentUserID: String?) -> [MessageCellNodeMetadata] {
+    open func buildMetadatas(for messages: [MessageData], currentUserID: String?) -> [MessageCellNodeMetadata] {
         var result = [MessageCellNodeMetadata]()
         if messages.isEmpty {
             return result
