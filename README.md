@@ -1,17 +1,17 @@
 # AsyncMessagesViewController
 
-A smooth, responsive and flexible messages UI library for iOS. Built on top of the awesome [AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit) framework, it takes full advantage of asynchronous sizing, (non-auto) layout and text rendering to deliver a 5x fps (subject to increase) scrolling experience.
+A smooth, responsive and flexible messages UI library for iOS apps. Built on top of the awesome [Texture](http://github.com/TextureGroup/Texture/) (formerly AsyncDisplayKit) framework, it takes full advantage of asynchronous layout and rendering to deliver a "butter smooth" scrolling experience.
 
 ![Screenshot1](Screenshots/screenshot1.png) &nbsp;&nbsp; ![Screenshot2](Screenshots/screenshot2.png)
 
 ## Dependencies
-* [AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit).
-* [SlackTextViewController](https://github.com/slackhq/SlackTextViewController) (to take advantages of its awesome features and customizations. Why reinvent the wheel?).
+* [Texture](http://github.com/TextureGroup/Texture/).
+* [SlackTextViewController](https://github.com/slackhq/SlackTextViewController)
 
 ## Requirements
-* iOS 8 and later.
+* iOS 9 and later.
+* Swift 4.
 * ARC.
-* Swift.
 
 ## Installation
 ### From [CocoaPods](http://cocoapods.org):
@@ -19,8 +19,6 @@ A smooth, responsive and flexible messages UI library for iOS. Built on top of t
 ````ruby
 pod 'AsyncMessagesViewController'  
 ````
-
-Can't do it? Well I'm sorry but the pod won't be available until AsyncDisplayKit hits v2.0.
 
 ### Without CocoaPods
 Copy the `Source\` directory to your project and install all dependencies.
@@ -46,7 +44,7 @@ Copy the `Source\` directory to your project and install all dependencies.
 
 ## Customizations
   * Custom bubble node:
-    * Please read [this guide](http://asyncdisplaykit.org/docs/subclassing.html) on writting a custom `ASDisplayNode`.
+    * Please read [this guide](http://texturegroup.org/docs/subclassing.html) on subclassing `ASDisplayNode`.
     * Implement a factory that conforms to `MessageBubbleNodeFactory` protocol.
     * Inject your factory to `DefaultAsyncMessagesCollectionViewDataSource` via its initializer.
     * Inject the data source to `AsyncMessagesViewController` (also via its initializer).
