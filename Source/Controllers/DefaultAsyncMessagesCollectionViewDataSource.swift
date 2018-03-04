@@ -37,14 +37,13 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
             nodeMetadatas = []
     }
 
-    //MARK: ASCollectionViewDataSource methods
+    //MARK: ASCollectionDataSource methods
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         assert(nodeMetadatas.count == messages.count, "Node metadata is required for each message.")
         return messages.count
     }
 
-    //TODO Use node block
-    func collectionNode(_ collectionNode: ASCollectionNode, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
+    func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let message = self.collectionNode(collectionNode: collectionNode, messageForItemAtIndexPath: indexPath)
         let metadata = nodeMetadatas[indexPath.item]
         let isOutgoing = metadata.isOutgoing
@@ -60,16 +59,18 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing: isOutgoing, hasTail: metadata.showsTailForBubbleImage)
         assert(bubbleNodeFactories.index(forKey: message.contentType()) != nil, "No bubble node factory for content type: \(message.contentType())")
         let bubbleNode = bubbleNodeFactories[message.contentType()]!.build(message: message, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
-        
-        let cellNode = MessageCellNode(
-            isOutgoing: isOutgoing,
-            topText: messageDate,
-            contentTopText: senderDisplayName,
-            bottomText: nil,
-            senderAvatarURL: senderAvatarURL,
-            bubbleNode: bubbleNode)
-        
-        return cellNode
+
+        let cellNodeBlock:() -> ASCellNode = {
+            let cellNode = MessageCellNode(
+                isOutgoing: isOutgoing,
+                topText: messageDate,
+                contentTopText: senderDisplayName,
+                bottomText: nil,
+                senderAvatarURL: senderAvatarURL,
+                bubbleNode: bubbleNode)
+            return cellNode
+        }
+        return cellNodeBlock
     }
 
     func collectionView(_ collectionView: ASCollectionView, constrainedSizeForNodeAt indexPath: IndexPath) -> ASSizeRange {

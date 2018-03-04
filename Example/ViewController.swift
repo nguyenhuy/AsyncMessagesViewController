@@ -10,14 +10,14 @@ import UIKit
 import AsyncDisplayKit
 import LoremIpsum
 
-class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
+class ViewController: AsyncMessagesViewController {
 
     private let users: [User]
     private var currentUser: User? {
         return users.filter({$0.ID == self.dataSource.currentUserID()}).first
     }
     
-    init() {
+    init?() {
         // Assume the default image size is used for message cell nodes
         let avatarImageSize = CGSize(width: kAMMessageCellNodeAvatarImageSize, height: kAMMessageCellNodeAvatarImageSize)
         users = (0..<5).map() {
@@ -26,9 +26,8 @@ class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
         }
         
         let dataSource = DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID)
-        super.init(dataSource: dataSource)!
-      
-        asyncCollectionNode.delegate = self
+        let delegate = DefaultAsyncMessagesCollectionViewDelegate()
+        super.init(dataSource: dataSource, delegate: delegate)
     }
     
     deinit {
@@ -96,11 +95,5 @@ class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
         let newUser = otherUsers[Int(arc4random_uniform(UInt32(otherUsers.count)))]
         dataSource.collectionNode(collectionNode: asyncCollectionNode, updateCurrentUserID: newUser.ID)
     }
-    
-    func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
-        let width = collectionNode.bounds.width;
-        return ASSizeRangeMake(CGSize(width: width, height: 0), CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
-    }
-
 }
 

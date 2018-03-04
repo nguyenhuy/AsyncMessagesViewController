@@ -13,23 +13,25 @@ import SlackTextViewController
 class AsyncMessagesViewController: SLKTextViewController {
 
     let dataSource: AsyncMessagesCollectionViewDataSource
+    let delegate: ASCollectionDelegate
     let asyncCollectionNode: ASCollectionNode
     override var collectionView: ASCollectionView {
         return scrollView as! ASCollectionView
     }
-    init?(dataSource: AsyncMessagesCollectionViewDataSource) {
-        self.dataSource = dataSource
 
+    init?(dataSource: AsyncMessagesCollectionViewDataSource, delegate: ASCollectionDelegate) {
+        self.dataSource = dataSource
+        self.delegate = delegate
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.vertical
         
-        asyncCollectionNode = ASCollectionNode(frame: CGRect.zero, collectionViewLayout: layout)
+        asyncCollectionNode = ASCollectionNode(collectionViewLayout: layout)
         let asyncCollectionView = asyncCollectionNode.view
         
         asyncCollectionView.backgroundColor = UIColor.white
         asyncCollectionView.scrollsToTop = true
         asyncCollectionNode.dataSource = dataSource
-        
+        asyncCollectionNode.delegate = delegate
         super.init(scrollView: asyncCollectionView)
         
         isInverted = false

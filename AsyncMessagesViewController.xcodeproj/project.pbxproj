@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38A1D758204C3AD700C88828 /* DefaultAsyncMessagesCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A1D757204C3AD700C88828 /* DefaultAsyncMessagesCollectionViewDelegate.swift */; };
 		AC8B65D31A9373DA00131D84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B65D21A9373DA00131D84 /* AppDelegate.swift */; };
 		AC8B65D51A9373DA00131D84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B65D41A9373DA00131D84 /* ViewController.swift */; };
 		AC8B65DA1A9373DA00131D84 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC8B65D91A9373DA00131D84 /* Images.xcassets */; };
@@ -33,6 +34,7 @@
 		1002051680E3BA9F22166E5C /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B8A292D9BC7865A434B294B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		356CBFABC1F3EA6E78E6884C /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
+		38A1D757204C3AD700C88828 /* DefaultAsyncMessagesCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAsyncMessagesCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		94DD265A8EFB33113BE48D46 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		AC8B65CD1A9373DA00131D84 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8B65D11A9373DA00131D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				ACC6EF511AA1A870002B76A9 /* MessageBubbleImageProvider.swift */,
 				ACC6EF521AA1A870002B76A9 /* MessageCellNodeMetadataFactory.swift */,
 				ACC6EF531AA1A870002B76A9 /* MessageTimestampFormatter.swift */,
+				38A1D757204C3AD700C88828 /* DefaultAsyncMessagesCollectionViewDelegate.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				ACC6EF5F1AA1A870002B76A9 /* AsyncMessagesViewController.swift in Sources */,
 				ACC6EF681AA1A870002B76A9 /* MessageNetworkImageBubbleNode.swift in Sources */,
 				AC8B65D31A9373DA00131D84 /* AppDelegate.swift in Sources */,
+				38A1D758204C3AD700C88828 /* DefaultAsyncMessagesCollectionViewDelegate.swift in Sources */,
 				AC90D5FE1AA1A68F0042C0D4 /* Message.swift in Sources */,
 				ACCC86871AAB35CB00DB37B7 /* MessageBubbleNodeFactory.swift in Sources */,
 				ACC6EF621AA1A870002B76A9 /* MessageCellNodeMetadataFactory.swift in Sources */,
