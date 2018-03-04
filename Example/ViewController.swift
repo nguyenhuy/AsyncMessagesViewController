@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import AsyncDisplayKit
+import LoremIpsum
 
-class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
+class ViewController: AsyncMessagesViewController {
 
     private let users: [User]
     private var currentUser: User? {
         return users.filter({$0.ID == self.dataSource.currentUserID()}).first
     }
     
-    init() {
+    init?() {
         // Assume the default image size is used for message cell nodes
         let avatarImageSize = CGSize(width: kAMMessageCellNodeAvatarImageSize, height: kAMMessageCellNodeAvatarImageSize)
         users = (0..<5).map() {
@@ -24,14 +26,13 @@ class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
         }
         
         let dataSource = DefaultAsyncMessagesCollectionViewDataSource(currentUserID: users[0].ID)
-        super.init(dataSource: dataSource)
-      
-        collectionView.asyncDelegate = self
+        let delegate = DefaultAsyncMessagesCollectionViewDelegate()
+        super.init(dataSource: dataSource, delegate: delegate)
     }
     
     deinit {
         // Tell ASCollectionView that this object is being deallocated (Issue #4)
-        collectionView.asyncDelegate = nil
+        asyncCollectionNode.delegate = nil
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -55,7 +56,7 @@ class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
                 content: textView.text,
                 date: Date(),
                 sender: user)
-            dataSource.collectionView(collectionView: collectionView, insertMessages: [message]) {completed in
+            dataSource.collectionNode(collectionNode: asyncCollectionNode, insertMessages: [message]) {completed in
                 self.scrollCollectionViewToBottom()
             }
         }
@@ -86,14 +87,13 @@ class ViewController: AsyncMessagesViewController, ASCollectionDelegate {
                 sender: sender)
             messages.append(message)
         }
-        dataSource.collectionView(collectionView: collectionView, insertMessages: messages, completion: nil)
+        dataSource.collectionNode(collectionNode: asyncCollectionNode, insertMessages: messages, completion: nil)
     }
     
-    func changeCurrentUser() {
+    @objc func changeCurrentUser() {
         let otherUsers = users.filter({$0.ID != self.dataSource.currentUserID()})
         let newUser = otherUsers[Int(arc4random_uniform(UInt32(otherUsers.count)))]
-        dataSource.collectionView(collectionView: collectionView, updateCurrentUserID: newUser.ID)
+        dataSource.collectionNode(collectionNode: asyncCollectionNode, updateCurrentUserID: newUser.ID)
     }
-
 }
 

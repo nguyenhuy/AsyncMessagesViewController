@@ -7,24 +7,31 @@
 //
 
 import Foundation
+import AsyncDisplayKit
+import SlackTextViewController
 
 class AsyncMessagesViewController: SLKTextViewController {
 
     let dataSource: AsyncMessagesCollectionViewDataSource
+    let delegate: ASCollectionDelegate
+    let asyncCollectionNode: ASCollectionNode
     override var collectionView: ASCollectionView {
         return scrollView as! ASCollectionView
     }
 
-    init(dataSource: AsyncMessagesCollectionViewDataSource) {
+    init?(dataSource: AsyncMessagesCollectionViewDataSource, delegate: ASCollectionDelegate) {
         self.dataSource = dataSource
-
+        self.delegate = delegate
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.vertical
-        let asyncCollectionView = ASCollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        
+        asyncCollectionNode = ASCollectionNode(collectionViewLayout: layout)
+        let asyncCollectionView = asyncCollectionNode.view
+        
         asyncCollectionView.backgroundColor = UIColor.white
         asyncCollectionView.scrollsToTop = true
-        asyncCollectionView.asyncDataSource = dataSource
-        
+        asyncCollectionNode.dataSource = dataSource
+        asyncCollectionNode.delegate = delegate
         super.init(scrollView: asyncCollectionView)
         
         isInverted = false
@@ -36,17 +43,17 @@ class AsyncMessagesViewController: SLKTextViewController {
 
     override func viewWillLayoutSubviews() {
         let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 5, 0)
-        collectionView.contentInset = insets
+        asyncCollectionNode.contentInset = insets
         collectionView.scrollIndicatorInsets = insets
 
         super.viewWillLayoutSubviews()
     }
     
     func scrollCollectionViewToBottom() {
-        let numberOfItems = dataSource.collectionView(collectionView, numberOfItemsInSection: 0)
+        let numberOfItems = dataSource.collectionNode!(asyncCollectionNode, numberOfItemsInSection: 0)
         if numberOfItems > 0 {
             let lastItemIndexPath = IndexPath(item: numberOfItems - 1, section: 0)
-            collectionView.scrollToItem(at: lastItemIndexPath, at: .bottom, animated: true)
+            asyncCollectionNode.scrollToItem(at: lastItemIndexPath, at: .bottom, animated: true)
         }
     }
     

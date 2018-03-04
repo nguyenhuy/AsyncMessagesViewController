@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AsyncDisplayKit
 
 class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesCollectionViewDataSource {
     
@@ -36,15 +37,14 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
             nodeMetadatas = []
     }
 
-    //MARK: ASCollectionViewDataSource methods
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    //MARK: ASCollectionDataSource methods
+    func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         assert(nodeMetadatas.count == messages.count, "Node metadata is required for each message.")
         return messages.count
     }
 
-    //TODO Use node block
-    func collectionView(_ collectionView: ASCollectionView, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
-        let message = self.collectionView(collectionView: collectionView, messageForItemAtIndexPath: indexPath)
+    func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
+        let message = self.collectionNode(collectionNode: collectionNode, messageForItemAtIndexPath: indexPath)
         let metadata = nodeMetadatas[indexPath.item]
         let isOutgoing = metadata.isOutgoing
 
@@ -59,18 +59,20 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         let bubbleImage = bubbleImageProvider.bubbleImage(isOutgoing: isOutgoing, hasTail: metadata.showsTailForBubbleImage)
         assert(bubbleNodeFactories.index(forKey: message.contentType()) != nil, "No bubble node factory for content type: \(message.contentType())")
         let bubbleNode = bubbleNodeFactories[message.contentType()]!.build(message: message, isOutgoing: isOutgoing, bubbleImage: bubbleImage)
-        
-        let cellNode = MessageCellNode(
-            isOutgoing: isOutgoing,
-            topText: messageDate,
-            contentTopText: senderDisplayName,
-            bottomText: nil,
-            senderAvatarURL: senderAvatarURL,
-            bubbleNode: bubbleNode)
-        
-        return cellNode
+
+        let cellNodeBlock:() -> ASCellNode = {
+            let cellNode = MessageCellNode(
+                isOutgoing: isOutgoing,
+                topText: messageDate,
+                contentTopText: senderDisplayName,
+                bottomText: nil,
+                senderAvatarURL: senderAvatarURL,
+                bubbleNode: bubbleNode)
+            return cellNode
+        }
+        return cellNodeBlock
     }
-  
+
     func collectionView(_ collectionView: ASCollectionView, constrainedSizeForNodeAt indexPath: IndexPath) -> ASSizeRange {
         let width = collectionView.bounds.width;
         // Assume horizontal scroll directions
@@ -82,7 +84,7 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         return _currentUserID
     }
     
-    func collectionView(collectionView: ASCollectionView, updateCurrentUserID newUserID: String?) {
+    func collectionNode(collectionNode: ASCollectionNode, updateCurrentUserID newUserID: String?) {
         if newUserID == _currentUserID {
             return
         }
@@ -94,15 +96,14 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         nodeMetadatas = updatedMetadatas
         
         let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedMetadatas, rhs: updatedMetadatas)
-        collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
+        collectionNode.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
     }
 
-    func collectionView(collectionView: ASCollectionView, messageForItemAtIndexPath indexPath: IndexPath) -> MessageData {
+    func collectionNode(collectionNode: ASCollectionNode, messageForItemAtIndexPath indexPath: IndexPath) -> MessageData {
         return messages[indexPath.item]
     }
     
-    func collectionView(collectionView: ASCollectionView, insertMessages newMessages: [MessageData], completion: ((Bool) -> ())?) {
-        
+    func collectionNode(collectionNode: ASCollectionNode, insertMessages newMessages: [MessageData], completion: ((Bool) -> ())?) {
         if newMessages.isEmpty {
             return
         }
@@ -126,18 +127,17 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
         }
         let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedNodeMetadatas, rhs: updatedNodeMetadatas)
         
-        collectionView.performBatchUpdates(
+        collectionNode.performBatchUpdates(
             {
-                collectionView.insertItems(at: IndexPath.createIndexPaths(section: 0, items: insertedIndices))
+                collectionNode.insertItems(at: IndexPath.createIndexPaths(section: 0, items: insertedIndices))
                 if !reloadIndicies.isEmpty {
-                    collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
+                    collectionNode.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
                 }
-            },
+        },
             completion: completion)
     }
   
-  
-    func collectionView(collectionView: ASCollectionView, deleteMessagesAtIndexPaths indexPaths: [IndexPath], completion: ((Bool) -> ())?) {
+    func collectionNode(collectionNode: ASCollectionNode, deleteMessagesAtIndexPaths indexPaths: [IndexPath], completion: ((Bool) -> ())?) {
         if indexPaths.isEmpty {
             return
         }
@@ -158,13 +158,13 @@ class DefaultAsyncMessagesCollectionViewDataSource: NSObject, AsyncMessagesColle
 
         let reloadIndicies = Array<MessageCellNodeMetadata>.computeDiff(lhs: outdatedNodesMetadata, rhs: updatedNodeMetadatas)
         
-        collectionView.performBatchUpdates(
+        collectionNode.performBatchUpdates(
             {
-                collectionView.deleteItems(at: sortedIndexPaths)
+                collectionNode.deleteItems(at: sortedIndexPaths)
                 if !reloadIndicies.isEmpty {
-                    collectionView.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
+                    collectionNode.reloadItems(at: IndexPath.createIndexPaths(section: 0, items: reloadIndicies))
                 }
-            },
+        },
             completion: completion)
     }
     

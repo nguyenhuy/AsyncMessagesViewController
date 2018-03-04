@@ -1,10 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '8.0'
+platform :ios, '9.0'
+target 'Example' do
+    use_frameworks!
 
-pod 'AsyncDisplayKit', '1.9.90'
-pod 'SlackTextViewController', '1.9.5'
+    pod 'Texture', '2.6'
+    pod 'SlackTextViewController', '1.9.6'
 
-# Used by example target
-pod 'LoremIpsum', :git => 'https://github.com/nguyenhuy/LoremIpsum.git', :branch => 'master'
-
+    # Used by example target
+    pod 'LoremIpsum', :git => 'https://github.com/nguyenhuy/LoremIpsum.git', :branch => 'master'
+end 
