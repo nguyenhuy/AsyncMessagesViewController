@@ -9,7 +9,7 @@
 import UIKit
 import AsyncDisplayKit
 
-protocol MessageBubbleNodeFactory {
+public protocol MessageBubbleNodeFactory {
     
     func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode
     

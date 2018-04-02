@@ -14,9 +14,12 @@ private let kAMMessageTextBubbleNodeIncomingTextAttributes = [NSAttributedString
 private let kAMMessageTextBubbleNodeOutgoingTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white,
     NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
 
-class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
-    
-    func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode {
+open class MessageTextBubbleNodeFactory: MessageBubbleNodeFactory {
+
+    public init(){
+    }
+
+    open func build(message: MessageData, isOutgoing: Bool, bubbleImage: UIImage) -> ASDisplayNode {
         let attributes = isOutgoing
             ? kAMMessageTextBubbleNodeOutgoingTextAttributes
             : kAMMessageTextBubbleNodeIncomingTextAttributes

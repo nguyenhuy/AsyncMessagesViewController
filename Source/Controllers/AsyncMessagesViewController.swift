@@ -10,16 +10,16 @@ import Foundation
 import AsyncDisplayKit
 import SlackTextViewController
 
-class AsyncMessagesViewController: SLKTextViewController {
+open class AsyncMessagesViewController: SLKTextViewController {
 
-    let dataSource: AsyncMessagesCollectionViewDataSource
-    let delegate: ASCollectionDelegate
-    let asyncCollectionNode: ASCollectionNode
-    override var collectionView: ASCollectionView {
+    open let dataSource: AsyncMessagesCollectionViewDataSource
+    open let delegate: ASCollectionDelegate
+    open let asyncCollectionNode: ASCollectionNode
+    override open var collectionView: ASCollectionView {
         return scrollView as! ASCollectionView
     }
 
-    init?(dataSource: AsyncMessagesCollectionViewDataSource, delegate: ASCollectionDelegate) {
+    public init?(dataSource: AsyncMessagesCollectionViewDataSource, delegate: ASCollectionDelegate) {
         self.dataSource = dataSource
         self.delegate = delegate
         let layout = UICollectionViewFlowLayout()
@@ -37,11 +37,11 @@ class AsyncMessagesViewController: SLKTextViewController {
         isInverted = false
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillLayoutSubviews() {
+    open override func viewWillLayoutSubviews() {
         let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 5, 0)
         asyncCollectionNode.contentInset = insets
         collectionView.scrollIndicatorInsets = insets
@@ -49,7 +49,7 @@ class AsyncMessagesViewController: SLKTextViewController {
         super.viewWillLayoutSubviews()
     }
     
-    func scrollCollectionViewToBottom() {
+    open func scrollCollectionViewToBottom() {
         let numberOfItems = dataSource.collectionNode!(asyncCollectionNode, numberOfItemsInSection: 0)
         if numberOfItems > 0 {
             let lastItemIndexPath = IndexPath(item: numberOfItems - 1, section: 0)

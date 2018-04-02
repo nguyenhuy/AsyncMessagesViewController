@@ -8,9 +8,9 @@
 
 import AsyncDisplayKit
 
-class DefaultAsyncMessagesCollectionViewDelegate: NSObject, ASCollectionDelegate {
+open class DefaultAsyncMessagesCollectionViewDelegate: NSObject, ASCollectionDelegate {
 
-    func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
+    open func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
         let width = collectionNode.bounds.width;
         return ASSizeRangeMake(CGSize(width: width, height: 0), CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
     }
