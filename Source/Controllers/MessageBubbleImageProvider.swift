@@ -29,7 +29,13 @@ open class MessageBubbleImageProvider {
     private let outgoingColor: UIColor
     private let incomingColor: UIColor
     private var imageCache = [MessageProperties: UIImage]()
-    
+
+    // This resource bundle name must match with the on declare in podspec
+    // For example:
+    // spec.ios.resource_bundle   = { 'AsyncMessagesViewController' => 'Source/Assets/AsyncMessagesViewController.xcassets' }
+    // Credit: https://stackoverflow.com/questions/35692265/how-to-load-resource-in-cocoapods-resource-bundle/35903720
+    private static let RESOURCE_BUNDLE_NAME = "AsyncMessagesViewController.bundle"
+
     public init(incomingColor: UIColor = kDefaultIncomingColor, outgoingColor: UIColor = kDefaultOutgoingColor) {
         self.incomingColor = incomingColor
         self.outgoingColor = outgoingColor
@@ -51,8 +57,11 @@ open class MessageBubbleImageProvider {
     }
     
     private func buildBubbleImage(properties: MessageProperties) -> UIImage {
+        let bundle = Bundle(for: MessageBubbleImageProvider.self)
+        let resourceBundleUrl = bundle.resourceURL?.appendingPathComponent(MessageBubbleImageProvider.RESOURCE_BUNDLE_NAME)
+        let resourceBundle = Bundle(url: resourceBundleUrl!)
         let imageName = "bubble" + (properties.isOutgoing ? "_outgoing" : "_incoming") + (properties.hasTail ? "" : "_tailless")
-        let bubble = UIImage(named: imageName)!
+        let bubble = UIImage(named: imageName, in: resourceBundle, compatibleWith: nil)!
         
         do {
             var normalBubble = try bubble.imageMaskedWith(color: properties.isOutgoing ? outgoingColor : incomingColor)
